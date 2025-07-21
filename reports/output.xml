@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.13.5 on win32)" generated="2025-07-21T16:14:01.481592" rpa="false" schemaversion="5">
+<suite id="s1" name="Gestion Modulos" source="C:\Users\nikog\OneDrive\Alcaldia\PruebasFuncionales\sisdep\test_suites\features\regulaciones\gestion_modulos.robot">
+<kw name="Setup Test Environment" owner="config" type="SETUP">
+<kw name="Set Selenium Speed" owner="SeleniumLibrary">
+<arg>${SELENIUM_SPEED}</arg>
+<doc>Sets the delay that is waited after each Selenium command.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.995429" elapsed="0.000296"/>
+</kw>
+<kw name="Set Selenium Implicit Wait" owner="SeleniumLibrary">
+<arg>${IMPLICIT_WAIT}</arg>
+<doc>Sets the implicit wait value used by Selenium.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.995908" elapsed="0.000233"/>
+</kw>
+<kw name="Set Screenshot Directory" owner="SeleniumLibrary">
+<arg>${SCREENSHOT_DIR}</arg>
+<doc>Sets the directory for captured screenshots.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.996270" elapsed="0.000306"/>
+</kw>
+<kw name="Set Selenium Timeout" owner="SeleniumLibrary">
+<arg>${EXPLICIT_WAIT}</arg>
+<doc>Sets the timeout that is used by various keywords.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.996724" elapsed="0.000192"/>
+</kw>
+<kw name="Set Selenium Page Load Timeout" owner="SeleniumLibrary">
+<arg>${PAGE_LOAD_TIMEOUT}</arg>
+<doc>Sets the page load timeout value used by Selenium.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.997044" elapsed="0.000169"/>
+</kw>
+<doc>Configuración inicial del entorno de pruebas</doc>
+<status status="PASS" start="2025-07-21T16:14:01.994565" elapsed="0.002718"/>
+</kw>
+<test id="s1-t1" name="Eliminar Modulo" line="45">
+<kw name="Abrir Navegador" owner="common_keywords" type="SETUP">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-07-21T16:14:01.998719" level="INFO">${chrome_options} = &lt;selenium.webdriver.chrome.options.Options object at 0x000001A31D1B46E0&gt;</msg>
+<var>${chrome_options}</var>
+<arg>sys.modules['selenium.webdriver'].ChromeOptions()</arg>
+<arg>sys, selenium.webdriver</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.998449" elapsed="0.000306"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${chrome_options}</arg>
+<arg>add_argument</arg>
+<arg>--ignore-ssl-errors</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.998876" elapsed="0.000139"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${chrome_options}</arg>
+<arg>add_argument</arg>
+<arg>--ignore-certificate-errors</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.999128" elapsed="0.000115"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${chrome_options}</arg>
+<arg>add_argument</arg>
+<arg>--allow-running-insecure-content</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.999353" elapsed="0.000113"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${chrome_options}</arg>
+<arg>add_argument</arg>
+<arg>--no-sandbox</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.999565" elapsed="0.000122"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${chrome_options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-dev-shm-usage</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.999787" elapsed="0.000111"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${chrome_options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-gpu</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-07-21T16:14:01.999996" elapsed="0.000119"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${chrome_options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-extensions</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-07-21T16:14:02.000213" elapsed="0.000110"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${chrome_options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-plugins</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2025-07-21T16:14:02.000427" elapsed="0.000106"/>
+</kw>
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-07-21T16:14:02.000925" level="INFO">Opening browser 'Chrome' to base url 'https://www.medellin.gov.co/sisdep'.</msg>
+<arg>${url}</arg>
+<arg>${BROWSER}</arg>
+<arg>options=${chrome_options}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-07-21T16:14:02.000659" elapsed="3.541952"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-07-21T16:14:05.543146" elapsed="0.356230"/>
+</kw>
+<kw name="Setup Test Environment" owner="config">
+<kw name="Set Selenium Speed" owner="SeleniumLibrary">
+<arg>${SELENIUM_SPEED}</arg>
+<doc>Sets the delay that is waited after each Selenium command.</doc>
+<status status="PASS" start="2025-07-21T16:14:05.900588" elapsed="0.000561"/>
+</kw>
+<kw name="Set Selenium Implicit Wait" owner="SeleniumLibrary">
+<arg>${IMPLICIT_WAIT}</arg>
+<doc>Sets the implicit wait value used by Selenium.</doc>
+<status status="PASS" start="2025-07-21T16:14:05.901438" elapsed="0.303395"/>
+</kw>
+<kw name="Set Screenshot Directory" owner="SeleniumLibrary">
+<arg>${SCREENSHOT_DIR}</arg>
+<doc>Sets the directory for captured screenshots.</doc>
+<status status="PASS" start="2025-07-21T16:14:06.205060" elapsed="0.000772"/>
+</kw>
+<kw name="Set Selenium Timeout" owner="SeleniumLibrary">
+<arg>${EXPLICIT_WAIT}</arg>
+<doc>Sets the timeout that is used by various keywords.</doc>
+<status status="PASS" start="2025-07-21T16:14:06.206166" elapsed="0.302419"/>
+</kw>
+<kw name="Set Selenium Page Load Timeout" owner="SeleniumLibrary">
+<arg>${PAGE_LOAD_TIMEOUT}</arg>
+<doc>Sets the page load timeout value used by Selenium.</doc>
+<status status="PASS" start="2025-07-21T16:14:06.509126" elapsed="0.303434"/>
+</kw>
+<doc>Configuración inicial del entorno de pruebas</doc>
+<status status="PASS" start="2025-07-21T16:14:05.899940" elapsed="0.913139"/>
+</kw>
+<arg>${SISDEP_URL}</arg>
+<doc>Abre el navegador y maximiza la ventana</doc>
+<status status="PASS" start="2025-07-21T16:14:01.998132" elapsed="4.815182"/>
+</kw>
+<kw name="Navegar A SISDEP" owner="sisdep_login_page">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2025-07-21T16:14:06.816311" level="INFO">Opening url 'https://www.medellin.gov.co/sisdep'</msg>
+<arg>${SISDEP_URL}</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2025-07-21T16:14:06.815728" elapsed="0.510638"/>
+</kw>
+<kw name="Verificar Elemento Presente" owner="common_keywords">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-07-21T16:14:07.329475" elapsed="0.637063"/>
+</kw>
+<arg>${SISDEP_LOGIN_PAGE_TITLE}</arg>
+<doc>Verifica que un elemento esté presente en la página</doc>
+<status status="PASS" start="2025-07-21T16:14:07.327746" elapsed="0.639292"/>
+</kw>
+<doc>Navega a la página principal de SISDEP</doc>
+<status status="PASS" start="2025-07-21T16:14:06.814637" elapsed="1.152724"/>
+</kw>
+<kw name="Realizar Login SISDEP" owner="sisdep_login_page">
+<kw name="Ingresar Usuario SISDEP" owner="sisdep_login_page">
+<kw name="Ingresar Texto" owner="common_keywords">
+<kw name="Esperar Elemento Visible" owner="common_keywords">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-07-21T16:14:07.974438" elapsed="0.632612"/>
+</kw>
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Espera a que un elemento sea visible</doc>
+<status status="PASS" start="2025-07-21T16:14:07.972800" elapsed="0.634715"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-07-21T16:14:08.609189" level="INFO">Typing text 'admin' into text field 'id:usuario'.</msg>
+<arg>${locator}</arg>
+<arg>${texto}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-07-21T16:14:08.608168" elapsed="1.073963"/>
+</kw>
+<arg>${SISDEP_USERNAME_FIELD}</arg>
+<arg>${usuario}</arg>
+<doc>Ingresa texto en un campo después de esperar que sea visible</doc>
+<status status="PASS" start="2025-07-21T16:14:07.971605" elapsed="1.710952"/>
+</kw>
+<arg>${usuario}</arg>
+<doc>Ingresa el nombre de usuario en SISDEP</doc>
+<status status="PASS" start="2025-07-21T16:14:07.970407" elapsed="1.712484"/>
+</kw>
+<kw name="Ingresar Contraseña SISDEP" owner="sisdep_login_page">
+<kw name="Ingresar Texto" owner="common_keywords">
+<kw name="Esperar Elemento Visible" owner="common_keywords">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-07-21T16:14:09.687495" elapsed="0.655168"/>
+</kw>
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Espera a que un elemento sea visible</doc>
+<status status="PASS" start="2025-07-21T16:14:09.686389" elapsed="0.656474"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-07-21T16:14:10.344317" level="INFO">Typing text 'EspacioPublico2024?sisdep' into text field 'id:password'.</msg>
+<arg>${locator}</arg>
+<arg>${texto}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-07-21T16:14:10.343305" elapsed="1.142970"/>
+</kw>
+<arg>${SISDEP_PASSWORD_FIELD}</arg>
+<arg>${contraseña}</arg>
+<doc>Ingresa texto en un campo después de esperar que sea visible</doc>
+<status status="PASS" start="2025-07-21T16:14:09.684940" elapsed="1.801790"/>
+</kw>
+<arg>${contraseña}</arg>
+<doc>Ingresa la contraseña en SISDEP</doc>
+<status status="PASS" start="2025-07-21T16:14:09.683563" elapsed="1.803453"/>
+</kw>
+<kw name="Hacer Click En Login SISDEP" owner="sisdep_login_page">
+<kw name="Hacer Click En Elemento" owner="common_keywords">
+<kw name="Esperar Elemento Clickable" owner="common_keywords">
+<kw name="Wait Until Element Is Enabled" owner="SeleniumLibrary">
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" start="2025-07-21T16:14:11.491711" elapsed="0.964431"/>
+</kw>
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Espera a que un elemento sea clickeable</doc>
+<status status="PASS" start="2025-07-21T16:14:11.490620" elapsed="0.965964"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-07-21T16:14:12.458299" level="INFO">Clicking element 'xpath://button[.//span[text()='Iniciar sesión']]'.</msg>
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-07-21T16:14:12.457223" elapsed="0.709336"/>
+</kw>
+<arg>${SISDEP_LOGIN_BUTTON}</arg>
+<doc>Hace click en un elemento después de esperar que sea clickeable</doc>
+<status status="PASS" start="2025-07-21T16:14:11.489084" elapsed="1.677901"/>
+</kw>
+<doc>Hace click en el botón de login de SISDEP</doc>
+<status status="PASS" start="2025-07-21T16:14:11.487778" elapsed="1.679485"/>
+</kw>
+<arg>${VALID_USERNAME}</arg>
+<arg>${VALID_PASSWORD}</arg>
+<doc>Realiza el proceso completo de login en SISDEP</doc>
+<status status="PASS" start="2025-07-21T16:14:07.968664" elapsed="5.198828"/>
+</kw>
+<kw name="El Usuario Esta En Seccion Modulos" owner="sisdep_modulos_page">
+<kw name="Hacer Click En Elemento" owner="common_keywords">
+<kw name="Esperar Elemento Clickable" owner="common_keywords">
+<kw name="Wait Until Element Is Enabled" owner="SeleniumLibrary">
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" start="2025-07-21T16:14:13.173878" elapsed="7.398240"/>
+</kw>
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Espera a que un elemento sea clickeable</doc>
+<status status="PASS" start="2025-07-21T16:14:13.171384" elapsed="7.401329"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-07-21T16:14:20.574656" level="INFO">Clicking element 'xpath://span[@class='ant-menu-title-content' and text()='Regulaciones']'.</msg>
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-07-21T16:14:20.573489" elapsed="0.836838"/>
+</kw>
+<arg>${MENU_REGULACIONES}</arg>
+<doc>Hace click en un elemento después de esperar que sea clickeable</doc>
+<status status="PASS" start="2025-07-21T16:14:13.169549" elapsed="8.241178"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-07-21T16:14:22.412577" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-07-21T16:14:21.411373" elapsed="1.001586"/>
+</kw>
+<kw name="Hacer Click En Elemento" owner="common_keywords">
+<kw name="Esperar Elemento Clickable" owner="common_keywords">
+<kw name="Wait Until Element Is Enabled" owner="SeleniumLibrary">
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" start="2025-07-21T16:14:22.417675" elapsed="1.090772"/>
+</kw>
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Espera a que un elemento sea clickeable</doc>
+<status status="PASS" start="2025-07-21T16:14:22.415885" elapsed="1.092860"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-07-21T16:14:23.509700" level="INFO">Clicking element 'xpath://a[@href='/sisdep/regulaciones/modulos']'.</msg>
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-07-21T16:14:23.509141" elapsed="0.884484"/>
+</kw>
+<arg>${SUBMENU_MODULOS}</arg>
+<doc>Hace click en un elemento después de esperar que sea clickeable</doc>
+<status status="PASS" start="2025-07-21T16:14:22.413901" elapsed="1.980168"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-07-21T16:14:26.395884" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-07-21T16:14:24.394680" elapsed="2.001684"/>
+</kw>
+<kw name="Reload Page" owner="SeleniumLibrary">
+<doc>Simulates user reloading page.</doc>
+<status status="PASS" start="2025-07-21T16:14:26.397057" elapsed="0.706056"/>
+</kw>
+<kw name="Verificar Elemento Presente" owner="common_keywords">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-07-21T16:14:27.105630" elapsed="0.645313"/>
+</kw>
+<arg>${SECCION_MODULOS_TITLE}</arg>
+<doc>Verifica que un elemento esté presente en la página</doc>
+<status status="PASS" start="2025-07-21T16:14:27.103796" elapsed="0.647486"/>
+</kw>
+<doc>Navega a la sección de Módulos</doc>
+<status status="PASS" start="2025-07-21T16:14:13.168689" elapsed="14.582803"/>
+</kw>
+<kw name="Filtrar Modulo Por Serial" owner="sisdep_modulos_page">
+<kw name="Ingresar Texto" owner="common_keywords">
+<kw name="Esperar Elemento Visible" owner="common_keywords">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-07-21T16:14:27.757047" elapsed="0.642727"/>
+</kw>
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Espera a que un elemento sea visible</doc>
+<status status="PASS" start="2025-07-21T16:14:27.755482" elapsed="0.645050"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-07-21T16:14:28.402135" level="INFO">Typing text '10-AVPL-002' into text field 'xpath://input[@id='serial']'.</msg>
+<arg>${locator}</arg>
+<arg>${texto}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-07-21T16:14:28.401155" elapsed="1.184117"/>
+</kw>
+<arg>${FILTRO_SERIAL_INPUT}</arg>
+<arg>${SERIAL}</arg>
+<doc>Ingresa texto en un campo después de esperar que sea visible</doc>
+<status status="PASS" start="2025-07-21T16:14:27.753774" elapsed="1.832002"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-07-21T16:14:30.587611" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-07-21T16:14:29.586372" elapsed="1.001678"/>
+</kw>
+<arg>10-AVPL-002</arg>
+<doc>Ingresa el serial en el filtro para buscar el módulo</doc>
+<status status="PASS" start="2025-07-21T16:14:27.752636" elapsed="2.835827"/>
+</kw>
+<kw name="Hacer Click En Eliminar Modulo" owner="sisdep_modulos_page">
+<kw name="Hacer Click En Elemento" owner="common_keywords">
+<kw name="Esperar Elemento Clickable" owner="common_keywords">
+<kw name="Wait Until Element Is Enabled" owner="SeleniumLibrary">
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" start="2025-07-21T16:14:30.594460" elapsed="0.950027"/>
+</kw>
+<arg>${locator}</arg>
+<arg>${timeout}</arg>
+<doc>Espera a que un elemento sea clickeable</doc>
+<status status="PASS" start="2025-07-21T16:14:30.593175" elapsed="0.951765"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-07-21T16:14:31.546420" level="INFO">Clicking element 'xpath:(//button[@aria-label='Eliminar' and .//span[text()='Eliminar']])[1]'.</msg>
+<arg>${locator}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-07-21T16:14:31.545525" elapsed="0.734939"/>
+</kw>
+<arg>${ELIMINAR_MODULO_BUTTON_PRIMERO}</arg>
+<doc>Hace click en un elemento después de esperar que sea clickeable</doc>
+<status status="PASS" start="2025-07-21T16:14:30.591474" elapsed="1.689384"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-07-21T16:14:33.282159" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-07-21T16:14:32.281313" elapsed="1.001210"/>
+</kw>
+<doc>Hace clic en el primer botón Eliminar del módulo filtrado</doc>
+<status status="PASS" start="2025-07-21T16:14:30.589695" elapsed="2.693193"/>
+</kw>
+<kw name="Cerrar Navegador" owner="common_keywords" type="TEARDOWN">
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-07-21T16:14:33.285841" elapsed="2.611586"/>
+</kw>
+<doc>Cierra el navegador actual</doc>
+<status status="PASS" start="2025-07-21T16:14:33.284600" elapsed="2.613168"/>
+</kw>
+<doc>Given que el usuario está en la lista de "Módulos".
+When hace clic en "Eliminar" en un módulo específico.
+And confirma la eliminación.
+Then el módulo es eliminado del sistema.</doc>
+<tag>eliminar</tag>
+<tag>modulos</tag>
+<tag>positivo</tag>
+<status status="PASS" start="2025-07-21T16:14:01.997355" elapsed="33.900965"/>
+</test>
+<kw name="Teardown Test Environment" owner="config" type="TEARDOWN">
+<kw name="Close All Browsers" owner="SeleniumLibrary">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" start="2025-07-21T16:14:35.902166" elapsed="0.000486"/>
+</kw>
+<doc>Limpieza del entorno de pruebas</doc>
+<status status="PASS" start="2025-07-21T16:14:35.901420" elapsed="0.001535"/>
+</kw>
+<doc>Suite de pruebas para la Feature: Gestión de Módulos (Regulaciones)</doc>
+<status status="PASS" start="2025-07-21T16:14:01.486215" elapsed="34.416955"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="1" fail="0" skip="0">eliminar</stat>
+<stat pass="1" fail="0" skip="0">modulos</stat>
+<stat pass="1" fail="0" skip="0">positivo</stat>
+</tag>
+<suite>
+<stat name="Gestion Modulos" id="s1" pass="1" fail="0" skip="0">Gestion Modulos</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
