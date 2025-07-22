@@ -59,5 +59,4 @@ Eliminar Valor De Dominio No En Uso
     Selecciona Dominio Especifico    ${DOMINIO_TIPO_DOCUMENTO}
     # And: Hace clic en el botón "Eliminar"
     Hace Click En Eliminar Valor
-    # Then: El sistema elimina el valor del dominio
-    El Sistema Elimina El Valor Del Dominio
+

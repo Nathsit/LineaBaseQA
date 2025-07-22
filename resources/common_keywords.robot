@@ -77,10 +77,13 @@ Limpiar Campo
     Clear Element Text    ${locator} 
 Eliminar Atributo Readonly Y Escribir Fecha
     [Arguments]    ${locator}    ${fecha}
-    ${id}=    Evaluate    '${locator}'.replace('id=','')
-    Execute JavaScript    document.getElementById('${id}').removeAttribute('readonly')
+    ${is_id}=    Run Keyword And Return Status    Should Start With    ${locator}    id=
+    Run Keyword If    ${is_id}    ${id}=    Evaluate    '${locator}'.replace('id=','')
+    Run Keyword If    ${is_id}    Execute JavaScript    document.getElementById('${id}').removeAttribute('readonly')
+    Run Keyword If    not ${is_id}    Execute JavaScript    var el=document.evaluate("${locator.replace('xpath=','')}",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;if(el){el.removeAttribute('readonly');}
     Input Text    ${locator}    ${fecha}
-    Execute JavaScript    var input=document.getElementById('${id}'); input.dispatchEvent(new Event('input', { bubbles: true })); input.dispatchEvent(new Event('change', { bubbles: true })); 
+    Run Keyword If    ${is_id}    Execute JavaScript    var input=document.getElementById('${id}'); input.dispatchEvent(new Event('input', { bubbles: true })); input.dispatchEvent(new Event('change', { bubbles: true }));
+    Run Keyword If    not ${is_id}    Execute JavaScript    var el=document.evaluate("${locator.replace('xpath=','')}",document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;if(el){el.dispatchEvent(new Event('input', { bubbles: true }));el.dispatchEvent(new Event('change', { bubbles: true }));}
 Seleccionar Fecha Hoy En Datepicker
     [Arguments]    ${locator}
     # Si el locator es por id, quitar readonly con JS

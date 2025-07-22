@@ -167,7 +167,7 @@ ${VALID_PASSWORD}              EspacioPublico2024ep
 1. Crear carpeta en `test_suites/features/nueva_feature/`
 2. Crear Page Objects necesarios en `page_objects/`3ar datos de prueba en `data/`
 4. Crear README específico
-5tualizar este README general
+5. Actualizar este README general
 
 ### Actualizar Locators
 Los locators están centralizados en los Page Objects:

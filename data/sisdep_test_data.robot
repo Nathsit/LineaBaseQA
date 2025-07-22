@@ -20,7 +20,7 @@ ${SISDEP_TIMEOUT_CARGA}    30s
 ${SISDEP_TIMEOUT_LOGIN}    15s
 ${SISDEP_TIMEOUT_NAVEGACION}    10s
 
-# Roles de usuario en SISDEP (TODO: Actualizar según roles reales)
+# Roles de usuario en SISDEP
 @{ROLES_SISDEP}    administrador
 
 # Datos de prueba para Gestión de Dominios

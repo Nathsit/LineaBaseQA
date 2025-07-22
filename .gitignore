@@ -1,0 +1,28 @@
+# Ignorar archivos y carpetas de logs y reportes
+logs/
+reports/
+*.log
+*.tmp
+*.bak
+
+# Ignorar drivers de navegador
+chromedriver.exe
+geckodriver.exe
+
+# Ignorar configuraciones de entorno y editor
+.vscode/
+.env
+*.pyc
+__pycache__/
+
+# Ignorar datos temporales
+*.swp
+*.swo
+
+# Ignorar archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de salida de Robot Framework
+output.xml
+*.db 

@@ -13,7 +13,6 @@ ${SISDEP_URL}                  ${BASE_URL}
 ${LOGIN_URL}                   ${SISDEP_URL}
 ${SECURE_AREA_URL}             ${SISDEP_URL}
 
-# Detección automática del ambiente para verificación de URL
 ${URL_VERIFICATION_PATH}       ${BASE_URL.find('localhost') != -1 and 'localhost:3000' or '/sisdep'}
 
 # Configuración del navegador
@@ -23,6 +22,7 @@ ${IMPLICIT_WAIT}              10s
 ${EXPLICIT_WAIT}               30s
 ${SELENIUM_SPEED}              0.3s
 ${PAGE_LOAD_TIMEOUT}           60s
+
 # Credenciales de prueba SISDEP
 ${VALID_USERNAME}              admin
 ${VALID_PASSWORD}              EspacioPublico2024?sisdep
