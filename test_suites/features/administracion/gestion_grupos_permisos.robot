@@ -43,4 +43,3 @@ Eliminacion De Grupo
     Ir A Seccion Grupos Y Permisos
     Seleccionar Grupo Para Eliminar    Grupo Prueba
     Eliminar Grupo
-    # Then: Grupo eliminado exitosamente 

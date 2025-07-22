@@ -33,12 +33,9 @@ Actualizacion De Informacion De Usuario
     Navegar A SISDEP
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     Ir A Seccion Usuarios
-    # When: Filtrar por documento específico
     Ingresar Texto En Filtro Documento    1000870852
-    # And: Seleccionar usuario y editar solo el email
     Seleccionar Usuario Por Documento    1000870852
     Editar Solo Email Usuario    usuario.editado@prueba.com
-    # Then: Verificar que el email se actualizó
     Verificar Email Actualizado
 
 Eliminacion De Usuario Existente
@@ -50,8 +47,6 @@ Eliminacion De Usuario Existente
     Navegar A SISDEP
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     Ir A Seccion Usuarios
-    # When: Filtrar y eliminar usuario
     Ingresar Texto En Filtro Documento    1000870852
     Seleccionar Usuario Por Documento    1000870852
     Eliminar Usuario
-    # Then: Usuario eliminado (sin verificación de mensaje) 

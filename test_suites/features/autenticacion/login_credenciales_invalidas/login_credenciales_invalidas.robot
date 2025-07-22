@@ -16,18 +16,11 @@ Inicio De Sesion Con Credenciales Incorrectas
     [Setup]            Abrir Navegador    ${SISDEP_URL}
     [Teardown]         Cerrar Navegador
     
-    # Given: Verificar que estamos en la página de login
     Navegar A SISDEP
-    Verificar Elementos De Login SISDEP Presentes
-    
-    # When: Ingresar credenciales inválidas
-    Realizar Login SISDEP    ${INVALID_USERNAME}    ${INVALID_PASSWORD}
-    
-    # Then: Verificar que se muestra el mensaje de error
+    Verificar Elementos De Login SISDEP Presentes    
+    Realizar Login SISDEP    ${INVALID_USERNAME}    ${INVALID_PASSWORD}    
     Verificar Login Fallido SISDEP    ${SISDEP_LOGIN_ERROR_MSG}
-    Verificar Elemento Presente    ${SISDEP_ERROR_MESSAGE}
-    
-    # Evidencia
+    Verificar Elemento Presente    ${SISDEP_ERROR_MESSAGE}    
     Tomar Screenshot    login_credenciales_invalidas
 
 Inicio De Sesion Con Usuario Invalido

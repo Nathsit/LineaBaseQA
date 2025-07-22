@@ -8,7 +8,6 @@ Suite Setup       Setup Test Environment
 Suite Teardown    Teardown Test Environment
 
 *** Test Cases ***
-# Smoke Tests - Pruebas críticas que deben pasar siempre
 Smoke Test - Login Exitoso
     [Documentation]    Test crítico de login exitoso
     [Tags]             smoke    autenticacion    login

@@ -15,17 +15,12 @@ Agregar Nuevo Valor A Dominio
     [Setup]    Abrir Navegador    ${SISDEP_URL}
     [Teardown]    Cerrar Navegador
     
-    # Given: El administrador está en la sección "Administración - Dominios"
     Navegar A SISDEP
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     El Administrador Esta En Seccion Dominios
-    # When: Selecciona un dominio específico
     Selecciona Dominio Especifico    ${DOMINIO_TIPO_DOCUMENTO}
-    # And: Ingresa un nuevo valor en el campo correspondiente
     Ingresa Nuevo Valor En Dominio    ${NUEVO_VALOR_DOMINIO}
-    # And: Hace clic en "Agregar"
     Hace Click En Agregar Valor
-    # Then: El sistema añade el nuevo valor a la lista de valores del dominio
     El Sistema Anade El Nuevo Valor Al Dominio
 
 Actualizar Valor De Dominio
@@ -34,15 +29,11 @@ Actualizar Valor De Dominio
     [Setup]    Abrir Navegador    ${SISDEP_URL}
     [Teardown]    Cerrar Navegador
     
-    # Given: El administrador está en la sección "Administración - Dominios"
     Navegar A SISDEP
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     El Administrador Esta En Seccion Dominios
-    # When: Selecciona un dominio específico
     Selecciona Dominio Especifico    ${DOMINIO_TIPO_DOCUMENTO}
-    # And: Modifica la descripción de un valor existente
     Hace Click En Actualizar Valor
-    # Then: El sistema guarda los cambios del valor
     El Sistema Guarda Los Cambios Del Valor
 
 Eliminar Valor De Dominio No En Uso
@@ -51,12 +42,9 @@ Eliminar Valor De Dominio No En Uso
     [Setup]    Abrir Navegador    ${SISDEP_URL}
     [Teardown]    Cerrar Navegador
     
-    # Given: El administrador está en la sección "Administración - Dominios"
     Navegar A SISDEP
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     El Administrador Esta En Seccion Dominios
-    # When: Selecciona un dominio específico
     Selecciona Dominio Especifico    ${DOMINIO_TIPO_DOCUMENTO}
-    # And: Hace clic en el botón "Eliminar"
     Hace Click En Eliminar Valor
 

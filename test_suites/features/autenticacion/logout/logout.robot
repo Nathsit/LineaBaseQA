@@ -17,20 +17,16 @@ Cierre De Sesion Exitoso
     [Setup]            Abrir Navegador    ${SISDEP_URL}
     [Teardown]         Cerrar Navegador
     
-    # Given: Iniciar sesión primero
     Navegar A SISDEP
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     Verificar Login Exitoso SISDEP
     Verificar Dashboard Cargado
     
-    # When: Realizar logout
     Realizar Logout
     
-    # Then: Verificar que el logout fue exitoso
     Verificar Logout Exitoso
     Verificar Elementos De Login SISDEP Presentes
     
-    # Evidencia
     Tomar Screenshot    logout_exitoso_completado
 
 Cierre De Sesion Desde Dashboard
@@ -39,12 +35,10 @@ Cierre De Sesion Desde Dashboard
     [Setup]            Abrir Navegador    ${SISDEP_URL}
     [Teardown]         Cerrar Navegador
     
-    # Login inicial
     Navegar A SISDEP
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     Verificar Dashboard Cargado
     
-    # Logout y verificación
     Realizar Logout
     Verificar Logout Exitoso
     Tomar Screenshot    logout_desde_dashboard 

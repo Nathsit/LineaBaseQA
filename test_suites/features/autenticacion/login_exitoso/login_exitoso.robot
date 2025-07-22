@@ -16,16 +16,9 @@ Inicio De Sesion Exitoso Con Credenciales Validas
     [Setup]            Abrir Navegador    ${SISDEP_URL}
     [Teardown]         Cerrar Navegador
     
-    # Given: Verificar que estamos en la página de login
     Navegar A SISDEP
-    Verificar Elementos De Login SISDEP Presentes
-    
-    # When: Ingresar credenciales válidas
-    Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
-    
-    # Then: Verificar que el login fue exitoso
+    Verificar Elementos De Login SISDEP Presentes    
+    Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}    
     Verificar Login Exitoso SISDEP
-    Verificar Elemento Presente    ${SISDEP_SUCCESS_MESSAGE}
-    
-    # Evidencia
+    Verificar Elemento Presente    ${SISDEP_SUCCESS_MESSAGE}    
     Tomar Screenshot    login_exitoso_completado 
