@@ -34,7 +34,7 @@ jobs:
         robot --variable BROWSER:chrome --outputdir reports test_suites/features/
 
     - name: Upload Robot Framework reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: robot-reports
         path: reports/ 
