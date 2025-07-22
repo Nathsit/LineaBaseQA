@@ -1,0 +1,38 @@
+trigger:
+  branches:
+    include:
+      - pruebas-funcionales  # Cambia por el nombre de tu rama si es diferente
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install robotframework robotframework-seleniumlibrary selenium
+    pip install robotframework-pabot
+    sudo apt-get update
+    sudo apt-get install -y chromium-browser chromium-chromedriver
+    export PATH=$PATH:/usr/lib/chromium-browser/
+  displayName: 'Instalar dependencias'
+
+- script: |
+    robot --variable BROWSER:chrome --outputdir reports test_suites/features/
+  displayName: 'Ejecutar pruebas Robot Framework'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'reports/output.xml'
+    failTaskOnFailedTests: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'reports'
+    ArtifactName: 'RobotReports'
+    publishLocation: 'Container' 
