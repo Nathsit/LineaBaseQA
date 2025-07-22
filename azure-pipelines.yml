@@ -1,8 +1,7 @@
 trigger:
   branches:
     include:
-      - pruebas-funcionales  # Cambia por el nombre de tu rama si es diferente
-
+      - pruebas-funcionales
 pool:
   vmImage: 'ubuntu-latest'
 
