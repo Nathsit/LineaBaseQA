@@ -26,8 +26,14 @@ jobs:
         pip install robotframework robotframework-seleniumlibrary selenium
         pip install robotframework-pabot
         sudo apt-get update
-        sudo apt-get install -y chromium-browser chromium-chromedriver
-        export PATH=$PATH:/usr/lib/chromium-browser/
+        # Instala Google Chrome
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+        # Instala ChromeDriver
+        sudo apt-get install -y chromium-chromedriver || sudo apt-get install -y chromedriver
+        sudo ln -sf /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver || true
 
     - name: Run Robot Framework tests
       run: |
