@@ -1,28 +1,48 @@
-# Ignorar archivos y carpetas de logs y reportes
+# Robot Framework
 logs/
 reports/
-*.log
-*.tmp
-*.bak
+output.xml
+log.html
+report.html
+*.png
+*.jpg
+*.jpeg
 
-# Ignorar drivers de navegador
-chromedriver.exe
-geckodriver.exe
+# Drivers
+drivers/chromedriver*
+drivers/geckodriver*
 
-# Ignorar configuraciones de entorno y editor
-.vscode/
-.env
-*.pyc
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
-# Ignorar datos temporales
+# IDE
+.vscode/
+.idea/
 *.swp
 *.swo
 
-# Ignorar archivos de sistema
+# OS
 .DS_Store
 Thumbs.db
 
-# Ignorar archivos de salida de Robot Framework
-output.xml
-*.db 
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Temporary files
+*.tmp
+*.temp 

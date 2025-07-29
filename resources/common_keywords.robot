@@ -15,6 +15,10 @@ Abrir Navegador
     Call Method    ${chrome_options}    add_argument    --disable-gpu
     Call Method    ${chrome_options}    add_argument    --disable-extensions
     Call Method    ${chrome_options}    add_argument    --disable-plugins
+    # Opciones para Docker (display virtual)
+    Call Method    ${chrome_options}    add_argument    --disable-dev-shm-usage
+    Call Method    ${chrome_options}    add_argument    --no-sandbox
+    Call Method    ${chrome_options}    add_argument    --disable-gpu
 
     Open Browser    ${url}    ${BROWSER}    options=${chrome_options}
     Maximize Browser Window
@@ -94,3 +98,19 @@ Seleccionar Fecha Hoy En Datepicker
     Sleep    1s
     Hacer Click En Elemento    xpath://a[contains(@class,'ant-picker-today-btn') and text()='Today']
     Sleep    1s 
+
+Navegar A SISDEP Con Reintentos
+    [Documentation]    Navega a SISDEP con reintentos en caso de error de conectividad
+    [Arguments]    ${max_intentos}=3    ${url}=${SISDEP_URL}
+    FOR    ${intento}    IN RANGE    1    ${max_intentos + 1}
+        TRY
+            Go To    ${url}
+            Wait Until Page Contains Element    xpath://body    10s
+            Log    Navegación exitosa en intento ${intento}
+            BREAK
+        EXCEPT    AS    ${error}
+            Log    Intento ${intento} falló: ${error}
+            Run Keyword If    ${intento} < ${max_intentos}    Sleep    5s
+            Run Keyword If    ${intento} == ${max_intentos}    Fail    No se pudo conectar después de ${max_intentos} intentos
+        END
+    END 

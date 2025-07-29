@@ -6,32 +6,36 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: UsePythonVersion@0
+- task: Docker@2
   inputs:
-    versionSpec: '3.x'
+    containerRegistry: 'Docker Hub'
+    repository: 'your-dockerhub-username/sisdep-robot-tests'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: |
+      latest
+      $(Build.BuildId)
+  displayName: 'Build and push Docker image'
 
 - script: |
-    python -m pip install --upgrade pip
-    pip install robotframework robotframework-seleniumlibrary selenium
-    pip install robotframework-pabot
-    sudo apt-get update
-    sudo apt-get install -y chromium-browser chromium-chromedriver
-    export PATH=$PATH:/usr/lib/chromium-browser/
-  displayName: 'Instalar dependencias'
-
-- script: |
-    robot --variable BROWSER:chrome --outputdir reports test_suites/features/
-  displayName: 'Ejecutar pruebas Robot Framework'
+    docker run --rm \
+      -v $(Build.ArtifactStagingDirectory)/reports:/app/reports \
+      -e DISPLAY=:99 \
+      -e CHROME_BIN=/usr/bin/google-chrome \
+      -e CHROMEDRIVER_PATH=/usr/local/bin/chromedriver \
+      your-dockerhub-username/sisdep-robot-tests:$(Build.BuildId) \
+      sh -c "Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & robot --outputdir reports test_suites/features/"
+  displayName: 'Ejecutar pruebas Robot Framework en Docker'
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
   inputs:
     testResultsFormat: 'JUnit'
-    testResultsFiles: 'reports/output.xml'
+    testResultsFiles: '$(Build.ArtifactStagingDirectory)/reports/output.xml'
     failTaskOnFailedTests: true
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'reports'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/reports'
     ArtifactName: 'RobotReports'
     publishLocation: 'Container' 

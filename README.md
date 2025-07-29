@@ -1,232 +1,178 @@
-# 🏛️ SISDEP - Pruebas Automatizadas
+# SISDEP - Pruebas Automatizadas
 
-## 📋 Descripción
+Proyecto de pruebas automatizadas para el sistema SISDEP de la Alcaldía de Medellín utilizando Robot Framework y SeleniumLibrary.
 
-Este repositorio contiene las pruebas automatizadas para el **Sistema SISDEP** de la Alcaldía de Medellín, desarrolladas con **Robot Framework** y **SeleniumLibrary** bajo el patrón Page Object Model (POM). El objetivo es garantizar la calidad funcional del sistema y facilitar la integración continua.
+## 🚀 Ejecución con Docker
 
----
+### Prerrequisitos
+- Docker
+- Docker Compose
 
-## 🏗️ Estructura del Proyecto
+### Ejecución Local con Docker
+
+```bash
+# Construir y ejecutar todas las pruebas
+docker-compose --profile local up --build
+
+# Ejecutar solo una suite específica
+docker run --rm -v $(pwd)/reports:/app/reports sisdep-robot-tests robot --outputdir reports test_suites/features/autenticacion/
+
+# Ejecutar un test case específico
+docker run --rm -v $(pwd)/reports:/app/reports sisdep-robot-tests robot --outputdir reports -t "Login Exitoso" test_suites/features/autenticacion/autenticacion_suite.robot
+```
+
+### Ejecución en CI/CD
+
+```bash
+# Para entornos de CI/CD (sin screenshots)
+docker-compose --profile ci up --build
+```
+
+### Comandos Docker Útiles
+
+```bash
+# Construir imagen
+docker build -t sisdep-robot-tests .
+
+# Ejecutar contenedor interactivo
+docker run -it --rm sisdep-robot-tests bash
+
+# Ver logs en tiempo real
+docker-compose logs -f robot-tests
+```
+
+## 📁 Estructura del Proyecto
 
 ```
 sisdep/
-├── README.md
-├── config/
-│   └── config.robot
-├── data/
-│   └── sisdep_test_data.robot
-├── drivers/
-│   ├── chromedriver.exe
-│   └── geckodriver.exe
-├── logs/
-├── page_objects/
-│   ├── sisdep_autorizaciones_page.robot
-│   ├── sisdep_dashboard_page.robot
-│   ├── sisdep_dominios_page.robot
-│   ├── sisdep_grupos_page.robot
-│   ├── sisdep_login_page.robot
-│   ├── sisdep_modulos_page.robot
-│   ├── sisdep_usuarios_page.robot
-│   ├── sisdep_visitas_page.robot
-│   ├── sisdep_venteros_page.robot
-│   ├── sisdep_estudio_socioeconomico_page.robot
-│   ├── sisdep_ofertas_institucionales_page.robot
-│   └── sisdep_vehiculos_page.robot
-├── reports/
-│   ├── report.html
-│   ├── log.html
-│   ├── output.xml
-│   └── screenshots/
-├── resources/
-│   └── common_keywords.robot
-├── test_suites/
+├── config/                 # Configuraciones
+├── data/                   # Datos de prueba
+├── drivers/               # Drivers de navegador
+├── logs/                  # Logs de ejecución
+├── page_objects/          # Page Objects
+├── reports/               # Reportes generados
+├── resources/             # Recursos comunes
+├── test_suites/          # Casos de prueba
 │   └── features/
 │       ├── administracion/
-│       │   ├── gestion_dominios.robot
-│       │   ├── gestion_grupos_permisos.robot
-│       │   ├── gestion_usuarios.robot
-│       │   └── README.md
 │       ├── autenticacion/
-│       │   ├── autenticacion_suite.robot
-│       │   ├── login_credenciales_invalidas/
-│       │   │   └── login_credenciales_invalidas.robot
-│       │   ├── login_exitoso/
-│       │   │   └── login_exitoso.robot
-│       │   ├── logout/
-│       │   │   └── logout.robot
-│       │   └── README.md
 │       ├── regulaciones/
-│       │   ├── asignacion_visitas.robot
-│       │   ├── gestion_autorizaciones.robot
-│       │   ├── gestion_modulos.robot
-│       │   └── README.md
 │       └── social/
-│           ├── gestion_venteros.robot
-│           ├── estudio_socioeconomico.robot
-│           ├── gestion_ofertas_institucionales.robot
-│           ├── gestion_vehiculos.robot
-│           └── README.md
-├── .github/
-│   └── workflows/
-│       └── robot-tests.yml
-├── azure-pipelines.yml
-└── .gitignore
+├── Dockerfile             # Configuración Docker
+├── docker-compose.yml     # Orquestación Docker
+├── requirements.txt       # Dependencias Python
+└── README.md
 ```
 
----
-
-## 🚀 Instalación y Configuración
+## 🧪 Ejecución Local (Sin Docker)
 
 ### Prerrequisitos
+- Python 3.8+
+- Google Chrome
+- ChromeDriver
 
-- Python 3.7+
-- Google Chrome (última versión)
-- ChromeDriver compatible
-- Git
+### Instalación
 
-### Instalación de dependencias
+```bash
+# Instalar dependencias
+pip install -r requirements.txt
 
-```sh
-pip install robotframework robotframework-seleniumlibrary robotframework-pabot
+# Descargar ChromeDriver (Windows)
+# Descargar desde: https://chromedriver.chromium.org/
+# Colocar en la carpeta drivers/
 ```
 
-### Configuración inicial
+### Comandos de Ejecución
 
-1. Clona el repositorio y entra al directorio:
-   ```sh
-   git clone <url>
-   cd sisdep
-   ```
-2. Verifica que el driver de Chrome esté en la carpeta `drivers/` (o usa el workflow de CI).
-3. Actualiza las credenciales y variables en `config/config.robot`.
+```bash
+# Ejecutar todas las pruebas
+robot -d reports test_suites/features/
 
----
+# Ejecutar suite específica
+robot -d reports test_suites/features/autenticacion/autenticacion_suite.robot
 
-## 🧪 Ejecución de Pruebas
+# Ejecutar test case específico
+robot -d reports -t "Login Exitoso" test_suites/features/autenticacion/autenticacion_suite.robot
 
-### Ejecutar todos los features (incluyendo solo autenticacion_suite)
-
-```sh
-robot -d reports test_suites/features/administracion/ test_suites/features/regulaciones/ test_suites/features/social/ test_suites/features/autenticacion/autenticacion_suite.robot
+# Ejecutar por tags
+robot -d reports --include autenticacion test_suites/features/
 ```
-
-### Ejecutar una feature específica
-
-```sh
-robot -d reports test_suites/features/regulaciones/gestion_modulos.robot
-```
-
-### Ejecutar por tags
-
-```sh
-robot -d reports --include smoke test_suites/features/
-robot -d reports --include negativo test_suites/features/
-```
-
-### Ejecutar en paralelo (requiere robotframework-pabot)
-
-```sh
-pabot --outputdir reports test_suites/features/
-```
-
----
 
 ## 📊 Reportes
 
-- `reports/report.html`: Resumen visual de resultados.
-- `reports/log.html`: Log detallado paso a paso.
-- `reports/output.xml`: Salida en XML (para CI/CD).
-- `reports/screenshots/`: Evidencia visual de fallos.
+Los reportes se generan en la carpeta `reports/`:
+- `report.html` - Reporte principal
+- `log.html` - Log detallado
+- `output.xml` - Resultados en formato XML
+- `screenshots/` - Capturas de pantalla
 
----
+## 🏷️ Tags Disponibles
 
-## 🏷️ Sistema de Tags
+- `autenticacion` - Pruebas de login/logout
+- `administracion` - Gestión de usuarios, dominios, grupos
+- `regulaciones` - Módulos, autorizaciones, visitas
+- `social` - Venteros, estudios socioeconómicos, ofertas
+- `positivo` - Casos de éxito
+- `negativo` - Casos de error
+- `funcional` - Pruebas funcionales
 
-- `smoke`, `funcional`, `regression`, `positivo`, `negativo`
-- Por feature: `autenticacion`, `modulos`, `venteros`, etc.
-- Por prioridad: `alta`, `media`, `baja`
+## 🔧 Configuración
 
----
+### Variables de Entorno
 
-## 🔧 Configuración de Entornos
-
-Variables principales en `config/config.robot`:
-
-```robot
-${BASE_URL}         https://www.medellin.gov.co
-${SISDEP_URL}       ${BASE_URL}/sisdep/
-${BROWSER}          chrome
-${VALID_USERNAME}   admin
-${VALID_PASSWORD}   EspacioPublico2024ep
+```bash
+# config/config.robot
+${SISDEP_URL}              https://sisdep.medellin.gov.co
+${VALID_USERNAME}           tu_usuario
+${VALID_PASSWORD}           tu_password
+${BROWSER}                  chrome
+${IMPLICIT_WAIT}           10s
 ```
 
----
-
-## 📚 Features Implementadas
-
-### Regulaciones
-- **Gestión de Módulos:** Registrar, actualizar, eliminar módulos.
-- **Gestión de Autorizaciones:** Flujos de autorización.
-- **Asignación de Visitas:** Asignar y gestionar visitas.
-
-### Social
-- **Gestión de Venteros:** Registrar, actualizar, generar reporte Excel.
-- **Estudio Socioeconómico:** Crear, firmar, generar PDF.
-- **Ofertas Institucionales:** Registrar oferta, agregar/eliminar participantes.
-- **Gestión de Vehículos:** Registrar y eliminar vehículos.
-
-### Administración
-- **Gestión de Dominios, Grupos, Usuarios:** CRUD y permisos.
-
-### Autenticación
-- **Login/Logout:** Casos positivos y negativos.
-
----
-
-## ⚙️ Integración Continua (CI/CD)
+## 🚀 CI/CD
 
 ### GitHub Actions
-
-- Archivo: `.github/workflows/robot-tests.yml`
-- Ejecuta pruebas automáticamente en cada push/PR.
-- Instala Google Chrome y ChromeDriver compatible.
-- Publica los reportes como artefactos.
+El proyecto incluye configuración para GitHub Actions que ejecuta las pruebas automáticamente en cada push.
 
 ### Azure DevOps
+Configuración de pipeline para ejecutar pruebas en contenedores Docker.
 
-- Archivo: `azure-pipelines.yml`
-- Pipeline para ejecución automática en ramas principales.
-- Publica resultados y artefactos.
+## 📝 Casos de Prueba Implementados
 
----
+### Autenticación
+- ✅ Login exitoso
+- ✅ Login con credenciales inválidas
+- ✅ Logout
+- ✅ Usuario inactivo
 
-## 🛠️ Buenas Prácticas
+### Administración
+- ✅ Gestión de usuarios (CRUD)
+- ✅ Gestión de dominios
+- ✅ Gestión de grupos y permisos
 
-- Usa Page Object Model para mantener los selectores centralizados.
-- Keywords descriptivos y reutilizables en español.
-- Documenta cada test y keyword.
-- Usa tags para clasificar y filtrar pruebas.
-- Actualiza los selectores cuando cambie la UI.
-- Haz backup de reportes importantes antes de nuevas ejecuciones.
+### Regulaciones
+- ✅ Gestión de módulos
+- ✅ Gestión de autorizaciones
+- ✅ Asignación de visitas
 
----
+### Social
+- ✅ Gestión de venteros
+- ✅ Estudio socioeconómico
+- ✅ Gestión de ofertas institucionales
+- ✅ Gestión de vehículos
 
 ## 🤝 Contribución
 
-1. Crea una rama para tu feature o fix.
-2. Desarrolla siguiendo la estructura y buenas prácticas.
-3. Ejecuta pruebas localmente antes de hacer push.
-4. Haz Pull Request para revisión y merge.
-
----
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
 ## 📞 Soporte
 
-- Consulta la documentación de cada feature (`README.md` en cada carpeta).
-- Revisa los logs en `reports/log.html`.
-- Verifica la configuración en `config/config.robot`.
+Para soporte técnico o preguntas sobre el proyecto, contacta al equipo de QA.
 
 ---
 
-**Desarrollado para la Alcaldía de Medellín**  
-**Sistema SISDEP - Pruebas Automatizadas** 
+**Nota**: Este proyecto utiliza Docker para garantizar consistencia entre entornos de desarrollo y CI/CD. Se recomienda usar Docker para ejecutar las pruebas. 

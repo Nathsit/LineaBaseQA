@@ -58,3 +58,14 @@ Regression Test - Validacion De Campos
     Limpiar Campos De Login SISDEP
     Tomar Screenshot    validacion_campos_vacios 
 
+Intento De Inicio De Sesion Con Usuario Inactivo
+    [Documentation]    Verifica que un usuario inactivo no puede iniciar sesión y recibe un mensaje de error claro.
+    [Tags]    autenticacion    negativo    usuario_inactivo
+    [Setup]    Abrir Navegador    ${SISDEP_URL}
+    [Teardown]    Cerrar Navegador
+    Navegar A SISDEP
+    Ingresar Credenciales SISDEP    100000000    100000000
+    Hacer Click En Boton Login
+    Verificar Mensaje Usuario Inactivo
+    Verificar Que No Se Accede Al Dashboard 
+
