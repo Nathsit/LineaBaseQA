@@ -32,6 +32,19 @@ Actualizacion De Permisos De Grupo
     Actualizar Permisos De Grupo    Permiso3,Permiso4
     Verificar Permisos Actualizados
 
+
+Creacion De Nuevo Grupo con el mismo nombre
+    [Documentation]    Given que el administrador está en la sección "Administración - Grupos y Permisos".
+    [Tags]             administracion    grupos    permisos    negativo    funcional
+    [Setup]            Abrir Navegador    ${SISDEP_URL}
+    [Teardown]         Cerrar Navegador
+    
+    Navegar A SISDEP
+    Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Ir A Seccion Grupos Y Permisos
+    Crear Nuevo Grupo Con Permisos    Grupo Prueba    Permiso1,Permiso2
+    Verificar Grupo Con el mismo nombre    Grupo Prueba
+
 Eliminacion De Grupo
     [Documentation]    Given que el administrador se encuentra en la sección de "Grupos y Permisos".
     [Tags]             administracion    grupos    permisos    funcional
@@ -43,3 +56,4 @@ Eliminacion De Grupo
     Ir A Seccion Grupos Y Permisos
     Seleccionar Grupo Para Eliminar    Grupo Prueba
     Eliminar Grupo
+

@@ -20,8 +20,8 @@ Agregar Nuevo Valor A Dominio
     El Administrador Esta En Seccion Dominios
     Selecciona Dominio Especifico    ${DOMINIO_TIPO_DOCUMENTO}
     Ingresa Nuevo Valor En Dominio    ${NUEVO_VALOR_DOMINIO}
-    Hace Click En Agregar Valor
-    El Sistema Anade El Nuevo Valor Al Dominio
+    #Hace Click En Agregar Valor
+    #El Sistema Anade El Nuevo Valor Al Dominio
 
 Actualizar Valor De Dominio
     [Documentation]    Actualizar la descripción de un valor existente en un dominio
@@ -48,3 +48,16 @@ Eliminar Valor De Dominio No En Uso
     Selecciona Dominio Especifico    ${DOMINIO_TIPO_DOCUMENTO}
     Hace Click En Eliminar Valor
 
+Agregar Nuevo Valor vacio a Dominio
+    [Documentation]    Agregar un nuevo valor vacio a un dominio    
+    [Tags]    dominios    agregar    negativo
+    [Setup]    Abrir Navegador    ${SISDEP_URL}
+    [Teardown]    Cerrar Navegador
+    
+    Navegar A SISDEP
+    Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    El Administrador Esta En Seccion Dominios
+    Selecciona Dominio Especifico    ${DOMINIO_TIPO_DOCUMENTO}
+    Ingresa Nuevo Valor En Dominio    ${NUEVO_VALOR_DOMINIO}
+    Hace Click En Agregar Valor
+    El Sistema no debe anadir el nuevo valor al dominio

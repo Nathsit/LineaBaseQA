@@ -48,7 +48,18 @@ Agregar Resolucion A Solicitud Autorizacion
     El Usuario Esta En Seccion Autorizaciones
     Acceder A Detalles Autorizacion    ${RADICADO_MERCURIO}
     Hacer Click En Agregar Resolucion
-   
+
+Agregar Resolucion A Solicitud Autorizacion con fechas diferentes
+    [Documentation]    Agregar una resolución a una solicitud de autorización con fechas diferentes
+    [Tags]    autorizaciones    resolucion    negativo
+    [Setup]    Abrir Navegador    ${SISDEP_URL}
+    [Teardown]    Cerrar Navegador
+    
+    Navegar A SISDEP
+    Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    El Usuario Esta En Seccion Autorizaciones
+    Acceder A Detalles Autorizacion    ${RADICADO_MERCURIO}
+    El Sistema muestra que las fechas de la resolución no pueden ser diferentes 
 
 Eliminar Autorizacion
     [Documentation]    Eliminar una autorización del sistema
@@ -73,3 +84,16 @@ Generar Reporte Autorizaciones Excel
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     El Usuario Esta En Seccion Autorizaciones
     Hacer Click En Boton Excel
+
+Creacion Nueva Solicitud Autorizacion ventero no existente    
+    [Documentation]    Crear una nueva solicitud de autorización para un ventero que no existe
+    [Tags]    autorizaciones    crear    negativo
+    [Setup]    Abrir Navegador    ${SISDEP_URL}
+    [Teardown]    Cerrar Navegador
+    
+    Navegar A SISDEP
+    Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    El Usuario Esta En Seccion Autorizaciones
+    Buscar Ventero Por Documento    1001022434
+    El Sistema muestra que el ventero no existe
+

@@ -18,6 +18,7 @@ ${FILTRO_TIPO_OFERTA_INPUT}    xpath://input[@id='tipoOferta']
 ${FILTRO_TIPO_OFERTA_OPCION_SENA}    xpath://div[contains(@class,'ant-select-item-option-content') and text()='sena dadad']
 ${DETALLES_OFERTA_BUTTON}    xpath://button[@aria-label='Detalles' and .//span[text()='Detalles']]
 ${AGREGAR_PARTICIPANTE_BUTTON}    xpath://button[@aria-label='Agregar' and .//span[text()='Agregar']]
+${ELIMINAR_OFERTA_BUTTON}    xpath://button[@aria-label='Remover' and .//span[text()='Remover']]
 ${DOCUMENTO_PARTICIPANTE_INPUT}    xpath://input[@id='documento']
 ${BUSCAR_PARTICIPANTE_BUTTON}    xpath://button[.//span[@role='img' and @aria-label='search'] and .//span[text()='Buscar']]
 ${TIPO_CONOCIMIENTO_INPUT}    xpath://input[@id='idTipoConocimiento']
@@ -98,6 +99,19 @@ Eliminar Participante De Oferta
     Hacer Click En Elemento    ${CONFIRMAR_ELIMINAR_PARTICIPANTE_BUTTON}
     Sleep    2s
 
+Eliminar Oferta con Participantes
+    [Arguments]    ${TIPO_OFERTA}
+    [Documentation]    Elimina una oferta institucional con participantes
+    Hacer Click En Elemento    ${FILTRO_TIPO_OFERTA_INPUT}
+    Sleep    1s
+    Hacer Click En Elemento    xpath://div[contains(@class,'ant-select-item-option-content') and text()='${TIPO_OFERTA}']
+    Hacer Click En Elemento    ${ELIMINAR_OFERTA_BUTTON}
+    Sleep    1s
+    Hacer Click En Elemento    ${CONFIRMAR_ELIMINAR_PARTICIPANTE_BUTTON}
+    Sleep    2s
+    Verificar Texto En Página  Elemento usado en Evidencias de la oferta
+
+    Sleep    2s
 Verificar Participante Eliminado
     [Documentation]    Verifica que el participante fue eliminado de la oferta
     Verificar Texto En Página    ${MENSAJE_EXITO_PARTICIPANTE_ELIMINADO} 

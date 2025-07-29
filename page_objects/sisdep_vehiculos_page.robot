@@ -65,7 +65,11 @@ Confirmar Eliminacion Vehiculo
 
 Verificar Vehiculo Eliminado
     [Documentation]    Verifica que el vehículo fue eliminado
-    Verificar Texto En Página    ${MENSAJE_EXITO_ELIMINACION} 
+    Verificar Texto En Página    ${MENSAJE_EXITO_ELIMINACION}
+
+Verificar Vehiculo No Eliminado 
+    [Documentation]    Verifica que el vehículo no fue eliminado
+    Verificar Texto En Página    Elemento usado en Visita domiciliaria
 
 Eliminar Vehiculo Por Placa
     [Arguments]    ${PLACA}

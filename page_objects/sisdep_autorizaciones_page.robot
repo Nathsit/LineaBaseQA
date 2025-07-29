@@ -233,3 +233,11 @@ Agregar Visita Administrativa A Autorizacion
     # Guardar visita (OK)
     Hacer Click En Elemento    xpath://button[@type='button' and contains(@class,'ant-btn-primary') and .//span[text()='OK']]
     Sleep    2s 
+
+El Sistema muestra que el ventero no existe
+    [Documentation]    Verifica que el sistema muestra un mensaje de error cuando el ventero no existe
+    Verificar Texto En Página    No se encontro un ventero con el documento ingresado
+
+El Sistema muestra que las fechas de la resolución no pueden ser diferentes
+    [Documentation]    Verifica que el sistema muestra un mensaje de error cuando     las fechas de la resolución no pueden ser diferentes a la fecha de la solicitud de autorización
+    Verificar Texto En Página    La fecha de efectos fiscales no puede ser diferente a la fecha de expedición

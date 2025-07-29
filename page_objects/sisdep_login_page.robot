@@ -15,6 +15,8 @@ ${SISDEP_LOGOUT_BUTTON}        xpath://li[contains(@class, ant-dropdown-menu-ite
 
 # Mensajes esperados en SISDEP
 ${SISDEP_LOGIN_ERROR_MSG}      Error accediendo
+${MENSAJE_USUARIO_INACTIVO}    xpath://div[contains(@class,'ant-alert-message') and contains(text(),'Usuario no activado por el administrador')]
+${USUARIO_INPUT}    id:usuario 
 
 *** Keywords ***
 Navegar A SISDEP
@@ -74,3 +76,8 @@ Explorar Elementos De La Página
     Log    Explorando elementos de la página SISDEP...
     # TODO: Agregar keywords para identificar elementos dinámicamente
     # Ejemplo: Get All Elements, Get Element Attributes, etc. 
+
+Verificar Usuario Inactivo
+    [Documentation]    Verifica que el usuario no puede iniciar sesión y recibe un mensaje de error claro.
+    Sleep    2s
+    Verificar Texto En Página    Usuario no activado por el administrador.

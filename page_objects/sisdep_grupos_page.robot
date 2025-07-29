@@ -41,6 +41,12 @@ Verificar Grupo Creado
     Sleep    2s
     Verificar Texto En Página    Registro creado exitosamente
 
+Verificar Grupo Con el mismo nombre
+    [Documentation]    Verifica que el grupo no se puede crear con el mismo nombre
+    [Arguments]    ${nombre_grupo}
+    Sleep    2s
+    Verificar Texto En Página    Error al crear el grupo
+
 Seleccionar Grupo Para Editar
     [Documentation]    Selecciona un grupo para editar
     [Arguments]    ${nombre_grupo}

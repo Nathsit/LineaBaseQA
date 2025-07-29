@@ -15,7 +15,7 @@ Registrar Nuevo Vehiculo
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     Ir A Seccion Vehiculos
     Hacer Click En Agregar Vehiculo
-    Completar Formulario Vehiculo    Juan Perez    RJZ672    Camion
+    Completar Formulario Vehiculo    Juan Perez    RJZ673    Camion
     Hacer Click En Guardar Vehiculo
 
 Eliminar Vehiculo No Utilizado
@@ -24,5 +24,17 @@ Eliminar Vehiculo No Utilizado
     Navegar A SISDEP
     Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
     Ir A Seccion Vehiculos
+    Eliminar Vehiculo Por Placa    RJZ673
+    Confirmar Eliminacion Vehiculo
+    Verificar Vehiculo Eliminado
+
+Eliminar Vehiculo Utilizado
+    [Setup]    Abrir Navegador    ${SISDEP_URL}
+    [Teardown]    Cerrar Navegador
+    Navegar A SISDEP
+    Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Ir A Seccion Vehiculos
     Eliminar Vehiculo Por Placa    RJZ672
+    Confirmar Eliminacion Vehiculo
+    Verificar Vehiculo No Eliminado
     

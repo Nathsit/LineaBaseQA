@@ -27,6 +27,14 @@ Agregar Participante A Oferta Institucional
     Agregar Participante A Oferta    sena dadad    1000100100    Atención en la oficina
     Verificar Participante Agregado
 
+Eliminar Oferta Institucional Con Participantes
+    [Setup]    Abrir Navegador    ${SISDEP_URL}
+    [Teardown]    Cerrar Navegador
+    Navegar A SISDEP
+    Realizar Login SISDEP    ${VALID_USERNAME}    ${VALID_PASSWORD}
+    Ir A Seccion Ofertas Institucionales
+    Eliminar Oferta con Participantes    sena dadad
+
 Eliminar Participante De Oferta Institucional
     [Setup]    Abrir Navegador    ${SISDEP_URL}
     [Teardown]    Cerrar Navegador

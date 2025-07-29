@@ -191,3 +191,11 @@ Verificar Email Actualizado
     [Documentation]    Verifica que el email del usuario se actualizó correctamente
     Sleep    2s
     Verificar Texto En Página    ¡Registro actualizado exitosamente! 
+
+Ingresar Texto En Campos Vacios
+    [Documentation]    Verifica que se muestre un mensaje de error cuando se intenta guardar un usuario con campos vacíos
+    Hacer Click En Elemento    ${FORM_GUARDAR_BUTTON}
+    Verificar Texto En Página    El campo es obligatorio
+
+
+    

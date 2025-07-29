@@ -44,3 +44,12 @@ Inicio De Sesion Con Password Invalido
     Realizar Login SISDEP    ${VALID_USERNAME}    ${INVALID_PASSWORD}
     Verificar Login Fallido SISDEP    ${SISDEP_LOGIN_ERROR_MSG}
     Tomar Screenshot    login_password_invalido 
+
+Intento De Inicio De Sesion Con Usuario Inactivo
+    [Documentation]    Verifica que un usuario inactivo no puede iniciar sesión y recibe un mensaje de error claro.
+    [Tags]    autenticacion    negativo    usuario_inactivo
+    [Setup]    Abrir Navegador    ${SISDEP_URL}
+    [Teardown]    Cerrar Navegador
+    Navegar A SISDEP
+    Realizar Login SISDEP    1000870852    1000870852
+    Verificar Usuario Inactivo 

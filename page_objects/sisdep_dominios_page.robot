@@ -67,6 +67,10 @@ El Sistema Anade El Nuevo Valor Al Dominio
     [Documentation]    Verifica que el nuevo valor se agregó correctamente
     Verificar Texto En Página    ¡Registro creado exitosamente!
 
+El Sistema no debe anadir el nuevo valor al dominio
+    [Documentation]    Verifica que el nuevo valor no se agregó correctamente
+    Verificar Texto En Página    El campo es obligatorio
+
 Modifica Descripcion De Valor Existente
     [Arguments]    ${valor_existente}
     [Documentation]    Modifica la descripción de un valor existente
