@@ -4,7 +4,9 @@ trigger:
 
 # Usa un agente de Linux, necesario para construir la imagen de Docker
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'Default' # <-- CAMBIA ESTO por el nombre de tu pool de agentes
+  demands:
+  - agent.name -equals DANIELP # Esto asegura que solo el agente DANIELP ejecute el trabajo
 
 stages:
 - stage: BuildAndTest
