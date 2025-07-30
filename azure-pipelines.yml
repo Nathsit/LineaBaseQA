@@ -4,9 +4,7 @@ trigger:
 
 # Usa un agente de Linux, necesario para construir la imagen de Docker
 pool:
-  name: 'DANIELP' # Nombre del Pool
-  demands:
-  - agent.name -equals danielesteban291 # Opcional: para usar ese agente específico
+  name: 'DANIELP'
 
 stages:
 - stage: BuildAndTest
