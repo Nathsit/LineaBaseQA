@@ -14,43 +14,35 @@ stages:
     displayName: 'Robot Framework CI Job'
     steps:
 
-    # Paso 1: Construir la imagen de Docker usando docker-compose
-    # Usamos el perfil 'ci' que definiste en tu docker-compose.yml
-    - task: DockerCompose@0
-      displayName: 'Build Docker Image'
+    # --- CAMBIO IMPORTANTE ---
+    # Se reemplaza la tarea DockerCompose@0 por CmdLine@2 para usar Compose V2
+    - task: CmdLine@2
+      displayName: 'Build Docker Image (Compose V2)'
       inputs:
-        containerregistrytype: 'Container Registry' # No se conecta a un registro, solo construye localmente
-        dockerComposeFile: 'docker-compose.yml'
-        action: 'Run a Docker Compose command'
-        dockerComposeCommand: '--profile ci build'
+        script: 'docker compose --profile ci build'
 
-    # Paso 2: Ejecutar los tests usando docker-compose
-    # El comando 'up' inicia los servicios. '--abort-on-container-exit' hace que el paso termine cuando el contenedor de pruebas finalice.
-    - task: DockerCompose@0
-      displayName: 'Run Robot Tests'
+    # --- CAMBIO IMPORTANTE ---
+    # Se reemplaza la tarea DockerCompose@0 por CmdLine@2 para usar Compose V2
+    - task: CmdLine@2
+      displayName: 'Run Robot Tests (Compose V2)'
       inputs:
-        containerregistrytype: 'Container Registry'
-        dockerComposeFile: 'docker-compose.yml'
-        action: 'Run a Docker Compose command'
-        dockerComposeCommand: '--profile ci up --abort-on-container-exit'
+        script: 'docker compose --profile ci up --abort-on-container-exit'
 
-    # Paso 3: Publicar los resultados de las pruebas en Azure DevOps
-    # Esto permite ver un resumen de tests pasados/fallidos en la pestaña "Tests" del pipeline
-    # Se ejecuta siempre (incluso si fallan los tests) para poder ver los resultados.
+    # Este paso no cambia: publica los resultados para verlos en la pestaña "Tests"
     - task: PublishTestResults@2
       displayName: 'Publish Test Results'
       condition: succeededOrFailed()
       inputs:
-        testResultsFormat: 'JUnit' # Robot Framework's output.xml es compatible con el formato JUnit
+        testResultsFormat: 'JUnit'
         testResultsFiles: '**/output.xml'
-        searchFolder: '$(System.DefaultWorkingDirectory)/reports' # Busca el archivo en la carpeta de reportes
-        failTaskOnFailedTests: true # El pipeline fallará si hay tests fallidos
+        searchFolder: '$(System.DefaultWorkingDirectory)/reports'
+        failTaskOnFailedTests: true
 
-    # Paso 4: Publicar los reportes HTML como un artefacto
-    # Esto te permitirá descargar y ver los archivos log.html y report.html completos
+    # Este paso no cambia: publica los reportes HTML como un archivo descargable
     - task: PublishPipelineArtifact@1
       displayName: 'Publish HTML Reports'
       condition: succeededOrFailed()
       inputs:
-        targetPath: 'reports' # La carpeta que quieres publicar
-        artifactName: 'Robot Test Reports' # El nombre del artefacto que aparecerá en Azure DevOps
+        targetPath: 'reports'
+        artifactName: 'Robot Test Reports'
+
