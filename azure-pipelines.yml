@@ -1,41 +1,56 @@
+# Define el trigger, se ejecutará en cada push a la rama 'pruebas funcionales'
 trigger:
-  branches:
-    include:
-      - pruebas-funcionales
+- 'pruebas-funcionales'
+
+# Usa un agente de Linux, necesario para construir la imagen de Docker
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: Docker@2
-  inputs:
-    containerRegistry: 'Docker Hub'
-    repository: 'your-dockerhub-username/sisdep-robot-tests'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: |
-      latest
-      $(Build.BuildId)
-  displayName: 'Build and push Docker image'
+stages:
+- stage: BuildAndTest
+  displayName: 'Build and Run Robot Tests'
+  jobs:
+  - job: RobotFrameworkJob
+    displayName: 'Robot Framework CI Job'
+    steps:
 
-- script: |
-    docker run --rm \
-      -v $(Build.ArtifactStagingDirectory)/reports:/app/reports \
-      -e DISPLAY=:99 \
-      -e CHROME_BIN=/usr/bin/google-chrome \
-      -e CHROMEDRIVER_PATH=/usr/local/bin/chromedriver \
-      your-dockerhub-username/sisdep-robot-tests:$(Build.BuildId) \
-      sh -c "Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & robot --outputdir reports test_suites/features/"
-  displayName: 'Ejecutar pruebas Robot Framework en Docker'
+    # Paso 1: Construir la imagen de Docker usando docker-compose
+    # Usamos el perfil 'ci' que definiste en tu docker-compose.yml
+    - task: DockerCompose@0
+      displayName: 'Build Docker Image'
+      inputs:
+        containerregistrytype: 'Container Registry' # No se conecta a un registro, solo construye localmente
+        dockerComposeFile: 'docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: '--profile ci build'
 
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '$(Build.ArtifactStagingDirectory)/reports/output.xml'
-    failTaskOnFailedTests: true
+    # Paso 2: Ejecutar los tests usando docker-compose
+    # El comando 'up' inicia los servicios. '--abort-on-container-exit' hace que el paso termine cuando el contenedor de pruebas finalice.
+    - task: DockerCompose@0
+      displayName: 'Run Robot Tests'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerComposeFile: 'docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: '--profile ci up --abort-on-container-exit'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/reports'
-    ArtifactName: 'RobotReports'
-    publishLocation: 'Container' 
+    # Paso 3: Publicar los resultados de las pruebas en Azure DevOps
+    # Esto permite ver un resumen de tests pasados/fallidos en la pestaña "Tests" del pipeline
+    # Se ejecuta siempre (incluso si fallan los tests) para poder ver los resultados.
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results'
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: 'JUnit' # Robot Framework's output.xml es compatible con el formato JUnit
+        testResultsFiles: '**/output.xml'
+        searchFolder: '$(System.DefaultWorkingDirectory)/reports' # Busca el archivo en la carpeta de reportes
+        failTaskOnFailedTests: true # El pipeline fallará si hay tests fallidos
+
+    # Paso 4: Publicar los reportes HTML como un artefacto
+    # Esto te permitirá descargar y ver los archivos log.html y report.html completos
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish HTML Reports'
+      condition: succeededOrFailed()
+      inputs:
+        targetPath: 'reports' # La carpeta que quieres publicar
+        artifactName: 'Robot Test Reports' # El nombre del artefacto que aparecerá en Azure DevOps
