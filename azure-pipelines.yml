@@ -3,40 +3,42 @@ trigger:
   branches:
     include:
       - pruebas-funcionales
+
+# Usa un agente de Linux, necesario para ejecutar la imagen de Docker
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: Docker@2
-  inputs:
-    containerRegistry: 'Docker Hub'
-    repository: 'your-dockerhub-username/sisdep-robot-tests'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: |
-      latest
-      $(Build.BuildId)
-  displayName: 'Build and push Docker image'
+stages:
+  - stage: BuildAndTest
+    displayName: 'Build and Run Robot Tests'
+    jobs:
+      - job: RobotFrameworkJob
+        displayName: 'Robot Framework CI Job'
+        steps:
 
-- script: |
-    docker run --rm \
-      -v $(Build.ArtifactStagingDirectory)/reports:/app/reports \
-      -e DISPLAY=:99 \
-      -e CHROME_BIN=/usr/bin/google-chrome \
-      -e CHROMEDRIVER_PATH=/usr/local/bin/chromedriver \
-      your-dockerhub-username/sisdep-robot-tests:$(Build.BuildId) \
-      sh -c "Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & robot --outputdir reports test_suites/features/"
-  displayName: 'Ejecutar pruebas Robot Framework en Docker'
+        # Paso 1: Ejecutar los tests usando la imagen de Docker Hub
+        - task: DockerCompose@0
+          displayName: 'Run Robot Tests with Docker Hub Image'
+          inputs:
+            containerregistrytype: 'Container Registry'
+            dockerComposeFile: 'docker-compose.yml'
+            action: 'Run a Docker Compose command'
+            dockerComposeCommand: '--profile dockerhub-ci up --abort-on-container-exit'
 
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '$(Build.ArtifactStagingDirectory)/reports/output.xml'
-    failTaskOnFailedTests: true
+        # Paso 2: Publicar los resultados de las pruebas en Azure DevOps
+        - task: PublishTestResults@2
+          displayName: 'Publish Test Results'
+          condition: succeededOrFailed()
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '**/output.xml'
+            searchFolder: '$(System.DefaultWorkingDirectory)/reports'
+            failTaskOnFailedTests: true
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/reports'
-    ArtifactName: 'RobotReports'
-    publishLocation: 'Container' 
+        # Paso 3: Publicar los reportes HTML como un artefacto
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish HTML Reports'
+          condition: succeededOrFailed()
+          inputs:
+            targetPath: 'reports'
+            artifactName: 'Robot Test Reports' 
