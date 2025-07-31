@@ -16,21 +16,18 @@ stages:
         displayName: 'Robot Framework CI Job'
         steps:
 
-        # Paso 1: Ejecutar los tests usando la imagen de Docker Hub
-        - task: Docker@2
-          displayName: 'Run Robot Tests with Docker Hub Image'
-          inputs:
-            command: 'run'
-            containerName: 'robot-tests'
-            imageName: 'nathsitt/sisdep-robot-tests:latest'
-            volumes: '$(System.DefaultWorkingDirectory)/reports:/app/reports'
-            environmentVariables: |
-              DISPLAY=:99
-              CHROME_BIN=/usr/bin/google-chrome
-              CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
-            arguments: 'sh -c "Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 & robot -d reports test_suites/features/autenticacion/autenticacion_suite.robot test_suites/features/administracion/ test_suites/features/regulaciones/ test_suites/features/social/"'
+        # Paso 1: Instalar dependencias de Python
+        - script: |
+            pip install -r requirements.txt
+          displayName: 'Install Python Dependencies'
 
-        # Paso 2: Publicar los resultados de las pruebas en Azure DevOps
+        # Paso 2: Ejecutar los tests directamente con Robot Framework
+        - script: |
+            robot -d reports test_suites/features/autenticacion/autenticacion_suite.robot test_suites/features/administracion/ test_suites/features/regulaciones/ test_suites/features/social/
+          displayName: 'Run Robot Tests'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+        # Paso 3: Publicar los resultados de las pruebas en Azure DevOps
         - task: PublishTestResults@2
           displayName: 'Publish Test Results'
           condition: succeededOrFailed()
@@ -40,7 +37,7 @@ stages:
             searchFolder: '$(System.DefaultWorkingDirectory)/reports'
             failTaskOnFailedTests: true
 
-        # Paso 3: Publicar los reportes HTML como un artefacto
+        # Paso 4: Publicar los reportes HTML como un artefacto
         - task: PublishPipelineArtifact@1
           displayName: 'Publish HTML Reports'
           condition: succeededOrFailed()
