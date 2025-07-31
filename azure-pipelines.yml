@@ -6,7 +6,7 @@ trigger:
 
 # Usa tu agente personalizado
 pool:
-  name: 'DANIELP'
+  name: 'NicoHost'
 
 stages:
   - stage: BuildAndTest
