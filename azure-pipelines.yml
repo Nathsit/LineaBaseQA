@@ -4,9 +4,9 @@ trigger:
     include:
       - pruebas-funcionales
 
-# Usa un agente de Linux, necesario para ejecutar la imagen de Docker
+# Usa tu agente personalizado
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'DANIELP'
 
 stages:
   - stage: BuildAndTest
