@@ -16,12 +16,19 @@ stages:
         displayName: 'Robot Framework CI Job'
         steps:
 
-        # Paso 1: Ejecutar los tests usando la imagen de Docker Hub con Docker Compose V2
-        - script: |
-            docker compose --profile dockerhub-ci up --abort-on-container-exit
+        # Paso 1: Ejecutar los tests usando la imagen de Docker Hub
+        - task: Docker@2
           displayName: 'Run Robot Tests with Docker Hub Image'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
-          runAsAdmin: true
+          inputs:
+            command: 'run'
+            containerName: 'robot-tests'
+            imageName: 'nathsitt/sisdep-robot-tests:latest'
+            volumes: '$(System.DefaultWorkingDirectory)/reports:/app/reports'
+            environmentVariables: |
+              DISPLAY=:99
+              CHROME_BIN=/usr/bin/google-chrome
+              CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
+            arguments: 'sh -c "Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 & robot -d reports test_suites/features/autenticacion/autenticacion_suite.robot test_suites/features/administracion/ test_suites/features/regulaciones/ test_suites/features/social/"'
 
         # Paso 2: Publicar los resultados de las pruebas en Azure DevOps
         - task: PublishTestResults@2
