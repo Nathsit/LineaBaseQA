@@ -1,52 +1,42 @@
 # Define el trigger, se ejecutará en cada push a la rama 'pruebas funcionales'
 trigger:
-- 'pruebas-funcionales'
-
-# Usa un agente de Linux, necesario para ejecutar la imagen de Docker
+  branches:
+    include:
+      - pruebas-funcionales
 pool:
   vmImage: 'ubuntu-latest'
 
-stages:
-- stage: BuildAndTest
-  displayName: 'Build and Run Robot Tests'
-  jobs:
-  - job: RobotFrameworkJob
-    displayName: 'Robot Framework CI Job'
-    steps:
+steps:
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker Hub'
+    repository: 'your-dockerhub-username/sisdep-robot-tests'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: |
+      latest
+      $(Build.BuildId)
+  displayName: 'Build and push Docker image'
 
-    # Paso 1: Login al Azure Container Registry
-    - task: AzureCLI@2
-      displayName: 'Login to Azure Container Registry'
-      inputs:
-        azureSubscription: 'Azure subscription 1'
-        scriptType: 'pscore'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          az acr login --name sisdepregistry
+- script: |
+    docker run --rm \
+      -v $(Build.ArtifactStagingDirectory)/reports:/app/reports \
+      -e DISPLAY=:99 \
+      -e CHROME_BIN=/usr/bin/google-chrome \
+      -e CHROMEDRIVER_PATH=/usr/local/bin/chromedriver \
+      your-dockerhub-username/sisdep-robot-tests:$(Build.BuildId) \
+      sh -c "Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & robot --outputdir reports test_suites/features/"
+  displayName: 'Ejecutar pruebas Robot Framework en Docker'
 
-    # Paso 2: Ejecutar los tests usando la imagen del ACR
-    - task: DockerCompose@0
-      displayName: 'Run Robot Tests with ACR Image'
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerComposeFile: 'docker-compose.yml'
-        action: 'Run a Docker Compose command'
-        dockerComposeCommand: '--profile acr-ci up --abort-on-container-exit'
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '$(Build.ArtifactStagingDirectory)/reports/output.xml'
+    failTaskOnFailedTests: true
 
-    # Paso 3: Publicar los resultados de las pruebas en Azure DevOps
-    - task: PublishTestResults@2
-      displayName: 'Publish Test Results'
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/output.xml'
-        searchFolder: '$(System.DefaultWorkingDirectory)/reports'
-        failTaskOnFailedTests: true
-
-    # Paso 4: Publicar los reportes HTML como un artefacto
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish HTML Reports'
-      condition: succeededOrFailed()
-      inputs:
-        targetPath: 'reports'
-        artifactName: 'Robot Test Reports'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/reports'
+    ArtifactName: 'RobotReports'
+    publishLocation: 'Container' 

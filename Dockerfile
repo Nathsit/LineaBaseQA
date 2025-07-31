@@ -8,13 +8,20 @@ RUN apt-get update && apt-get install -y \
     unzip \
     xvfb \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# Instalar Google Chrome (versión específica)
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+# --- CORRECCIÓN FINAL ---
+# Definimos las variables para las versiones de Chrome
+# La versión del paquete .deb a veces incluye un "-1" al final
+ENV CHROME_VERSION="127.0.6533.72"
+ENV CHROME_DEB_VERSION="127.0.6533.72-1"
+
+# Descargar el paquete .deb directamente e instalarlo con apt
+# Esto es más seguro que buscar en el repositorio
+RUN wget -q "https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_DEB_VERSION}_amd64.deb" \
     && apt-get update \
-    && apt-get install -y google-chrome-stable=138.0.7204.168-1 \
+    && apt-get install -y ./google-chrome-stable_${CHROME_DEB_VERSION}_amd64.deb --no-install-recommends \
+    && rm google-chrome-stable_${CHROME_DEB_VERSION}_amd64.deb \
     && rm -rf /var/lib/apt/lists/*
 
 # Establecer directorio de trabajo
@@ -29,8 +36,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar el código del proyecto
 COPY . .
 
-# Descargar ChromeDriver compatible con Chrome 138
-RUN wget -O /tmp/chromedriver.zip "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/138.0.7204.168/linux64/chromedriver-linux64.zip" \
+# Descargar el ChromeDriver que corresponde a la versión de Chrome
+# Esta parte ya estaba bien
+RUN wget -O /tmp/chromedriver.zip "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip" \
     && unzip /tmp/chromedriver.zip -d /tmp/ \
     && mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/ \
     && rm -rf /tmp/chromedriver.zip /tmp/chromedriver-linux64 \
@@ -44,5 +52,5 @@ ENV DISPLAY=:99
 ENV CHROME_BIN=/usr/bin/google-chrome
 ENV CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
 
-# Comando por defecto (sin headless)
-CMD ["robot", "-d", "reports", "test_suites/features/"] 
+# Comando por defecto
+CMD ["robot", "-d", "reports", "test_suites/features/"]

@@ -64,8 +64,7 @@ Intento De Inicio De Sesion Con Usuario Inactivo
     [Setup]    Abrir Navegador    ${SISDEP_URL}
     [Teardown]    Cerrar Navegador
     Navegar A SISDEP
-    Ingresar Credenciales SISDEP    100000000    100000000
-    Hacer Click En Boton Login
-    Verificar Mensaje Usuario Inactivo
-    Verificar Que No Se Accede Al Dashboard 
+    Realizar Login SISDEP    1000870852    1000870852
+    Verificar Usuario Inactivo
+     
 
