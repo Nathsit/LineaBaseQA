@@ -26,4 +26,18 @@ services:
       sh -c "Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
              robot -d reports test_suites/features/autenticacion/autenticacion_suite.robot test_suites/features/administracion/ test_suites/features/regulaciones/ test_suites/features/social/"
     profiles:
-      - ci 
+      - ci
+
+  robot-tests-acr:
+    image: sisdepregistry.azurecr.io/sisdep-robot-tests:latest
+    volumes:
+      - ./reports:/app/reports
+    environment:
+      - DISPLAY=:99
+      - CHROME_BIN=/usr/bin/google-chrome
+      - CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
+    command: >
+      sh -c "Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+             robot -d reports test_suites/features/autenticacion/autenticacion_suite.robot test_suites/features/administracion/ test_suites/features/regulaciones/ test_suites/features/social/"
+    profiles:
+      - acr-ci 
