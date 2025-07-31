@@ -16,14 +16,11 @@ stages:
         displayName: 'Robot Framework CI Job'
         steps:
 
-        # Paso 1: Ejecutar los tests usando la imagen de Docker Hub
-        - task: DockerCompose@0
+        # Paso 1: Ejecutar los tests usando la imagen de Docker Hub con Docker Compose V2
+        - script: |
+            docker compose --profile dockerhub-ci up --abort-on-container-exit
           displayName: 'Run Robot Tests with Docker Hub Image'
-          inputs:
-            containerregistrytype: 'Container Registry'
-            dockerComposeFile: 'docker-compose.yml'
-            action: 'Run a Docker Compose command'
-            dockerComposeCommand: '--profile dockerhub-ci up --abort-on-container-exit'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
 
         # Paso 2: Publicar los resultados de las pruebas en Azure DevOps
         - task: PublishTestResults@2
