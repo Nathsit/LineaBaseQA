@@ -21,6 +21,7 @@ stages:
             docker compose --profile dockerhub-ci up --abort-on-container-exit
           displayName: 'Run Robot Tests with Docker Hub Image'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
+          runAsAdmin: true
 
         # Paso 2: Publicar los resultados de las pruebas en Azure DevOps
         - task: PublishTestResults@2
