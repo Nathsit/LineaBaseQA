@@ -131,9 +131,6 @@ ${IMPLICIT_WAIT}           10s
 
 ## 🚀 CI/CD
 
-### GitHub Actions
-El proyecto incluye configuración para GitHub Actions que ejecuta las pruebas automáticamente en cada push.
-
 ### Azure DevOps
 Configuración de pipeline para ejecutar pruebas en contenedores Docker.
 
