@@ -1,0 +1,73 @@
+# Pipeline para módulo de Administración
+# Ejecuta las pruebas del módulo de administración (usuarios, grupos, dominios)
+
+trigger:
+  branches:
+    include:
+      - LineaBase
+      - main
+      - master
+  paths:
+    include:
+      - SISDEP-LineaBase/tests/features/administracion/*
+      - SISDEP-LineaBase/page_objects/usuarios_page.py
+      - SISDEP-LineaBase/page_objects/grupos_page.py
+      - SISDEP-LineaBase/page_objects/dominios_page.py
+      - SISDEP-LineaBase/pipelines/02-administracion.yml
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  pythonVersion: '3.11'
+  moduleName: 'administracion'
+  reportPath: '$(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports/$(moduleName)'
+
+stages:
+- stage: TestAdministracion
+  displayName: 'Ejecutar Pruebas - Administración'
+  jobs:
+  - job: RunTests
+    displayName: 'Ejecutar Tests de Administración'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Configurar Python $(pythonVersion)'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r SISDEP-LineaBase/requirements.txt
+      displayName: 'Instalar dependencias'
+
+    - script: |
+        playwright install chromium
+        playwright install-deps chromium
+      displayName: 'Instalar Playwright y navegadores'
+
+    - script: |
+        cd SISDEP-LineaBase
+        mkdir -p reports/$(moduleName)
+        pytest tests/features/administracion/ \
+          -v \
+          -m "administracion" \
+          --html=reports/$(moduleName)/report.html \
+          --self-contained-html \
+          --junitxml=reports/$(moduleName)/junit.xml
+      displayName: 'Ejecutar pruebas de Administración'
+      continueOnError: true
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: '**/junit.xml'
+        testRunTitle: 'Pruebas de Administración'
+        failTaskOnFailedTests: false
+      displayName: 'Publicar resultados de pruebas'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports/$(moduleName)'
+        artifactName: 'Reporte-Administracion'
+        publishLocation: 'Container'
+      displayName: 'Publicar reporte HTML'
+

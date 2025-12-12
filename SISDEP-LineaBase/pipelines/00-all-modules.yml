@@ -1,0 +1,205 @@
+# Pipeline principal - Ejecuta todos los módulos
+# Este pipeline ejecuta todas las pruebas de todos los módulos en paralelo
+
+trigger:
+  branches:
+    include:
+      - LineaBase
+      - main
+      - master
+  paths:
+    include:
+      - SISDEP-LineaBase/tests/*
+      - SISDEP-LineaBase/page_objects/*
+      - SISDEP-LineaBase/pipelines/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  pythonVersion: '3.11'
+
+stages:
+- stage: Setup
+  displayName: 'Configuración Inicial'
+  jobs:
+  - job: SetupEnvironment
+    displayName: 'Configurar Entorno'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Configurar Python $(pythonVersion)'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r SISDEP-LineaBase/requirements.txt
+      displayName: 'Instalar dependencias'
+
+    - script: |
+        playwright install chromium
+        playwright install-deps chromium
+      displayName: 'Instalar Playwright y navegadores'
+
+- stage: TestAllModules
+  displayName: 'Ejecutar Pruebas - Todos los Módulos'
+  dependsOn: Setup
+  jobs:
+  - job: TestAutenticacion
+    displayName: 'Pruebas de Autenticación'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Configurar Python'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r SISDEP-LineaBase/requirements.txt
+      displayName: 'Instalar dependencias'
+
+    - script: |
+        playwright install chromium
+        playwright install-deps chromium
+      displayName: 'Instalar Playwright'
+
+    - script: |
+        cd SISDEP-LineaBase
+        mkdir -p reports/autenticacion
+        pytest tests/features/autenticacion/ \
+          -v \
+          -m "autenticacion" \
+          --html=reports/autenticacion/report.html \
+          --self-contained-html \
+          --junitxml=reports/autenticacion/junit.xml
+      displayName: 'Ejecutar pruebas de Autenticación'
+      continueOnError: true
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: '**/junit.xml'
+        testRunTitle: 'Pruebas de Autenticación'
+        failTaskOnFailedTests: false
+
+  - job: TestAdministracion
+    displayName: 'Pruebas de Administración'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Configurar Python'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r SISDEP-LineaBase/requirements.txt
+      displayName: 'Instalar dependencias'
+
+    - script: |
+        playwright install chromium
+        playwright install-deps chromium
+      displayName: 'Instalar Playwright'
+
+    - script: |
+        cd SISDEP-LineaBase
+        mkdir -p reports/administracion
+        pytest tests/features/administracion/ \
+          -v \
+          -m "administracion" \
+          --html=reports/administracion/report.html \
+          --self-contained-html \
+          --junitxml=reports/administracion/junit.xml
+      displayName: 'Ejecutar pruebas de Administración'
+      continueOnError: true
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: '**/junit.xml'
+        testRunTitle: 'Pruebas de Administración'
+        failTaskOnFailedTests: false
+
+  - job: TestRegulaciones
+    displayName: 'Pruebas de Regulaciones'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Configurar Python'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r SISDEP-LineaBase/requirements.txt
+      displayName: 'Instalar dependencias'
+
+    - script: |
+        playwright install chromium
+        playwright install-deps chromium
+      displayName: 'Instalar Playwright'
+
+    - script: |
+        cd SISDEP-LineaBase
+        mkdir -p reports/regulaciones
+        pytest tests/features/regulaciones/ \
+          -v \
+          -m "regulaciones" \
+          --html=reports/regulaciones/report.html \
+          --self-contained-html \
+          --junitxml=reports/regulaciones/junit.xml
+      displayName: 'Ejecutar pruebas de Regulaciones'
+      continueOnError: true
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: '**/junit.xml'
+        testRunTitle: 'Pruebas de Regulaciones'
+        failTaskOnFailedTests: false
+
+  - job: TestSocial
+    displayName: 'Pruebas de Social'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Configurar Python'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r SISDEP-LineaBase/requirements.txt
+      displayName: 'Instalar dependencias'
+
+    - script: |
+        playwright install chromium
+        playwright install-deps chromium
+      displayName: 'Instalar Playwright'
+
+    - script: |
+        cd SISDEP-LineaBase
+        mkdir -p reports/social
+        pytest tests/features/social/ \
+          -v \
+          -m "social" \
+          --html=reports/social/report.html \
+          --self-contained-html \
+          --junitxml=reports/social/junit.xml
+      displayName: 'Ejecutar pruebas de Social'
+      continueOnError: true
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: '**/junit.xml'
+        testRunTitle: 'Pruebas de Social'
+        failTaskOnFailedTests: false
+
+- stage: PublishReports
+  displayName: 'Publicar Reportes Consolidados'
+  dependsOn: TestAllModules
+  jobs:
+  - job: ConsolidateReports
+    displayName: 'Consolidar y Publicar Reportes'
+    steps:
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports'
+        artifactName: 'Reportes-Todos-Los-Modulos'
+        publishLocation: 'Container'
+      displayName: 'Publicar todos los reportes'
+

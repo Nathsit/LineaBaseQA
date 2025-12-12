@@ -1,0 +1,71 @@
+# Pipeline para módulo de Autenticación
+# Ejecuta las pruebas del módulo de autenticación (login, logout, credenciales inválidas)
+
+trigger:
+  branches:
+    include:
+      - LineaBase
+      - main
+      - master
+  paths:
+    include:
+      - SISDEP-LineaBase/tests/features/autenticacion/*
+      - SISDEP-LineaBase/page_objects/login_page.py
+      - SISDEP-LineaBase/pipelines/01-autenticacion.yml
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  pythonVersion: '3.11'
+  moduleName: 'autenticacion'
+  reportPath: '$(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports/$(moduleName)'
+
+stages:
+- stage: TestAutenticacion
+  displayName: 'Ejecutar Pruebas - Autenticación'
+  jobs:
+  - job: RunTests
+    displayName: 'Ejecutar Tests de Autenticación'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Configurar Python $(pythonVersion)'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r SISDEP-LineaBase/requirements.txt
+      displayName: 'Instalar dependencias'
+
+    - script: |
+        playwright install chromium
+        playwright install-deps chromium
+      displayName: 'Instalar Playwright y navegadores'
+
+    - script: |
+        cd SISDEP-LineaBase
+        mkdir -p reports/$(moduleName)
+        pytest tests/features/autenticacion/ \
+          -v \
+          -m "autenticacion" \
+          --html=reports/$(moduleName)/report.html \
+          --self-contained-html \
+          --junitxml=reports/$(moduleName)/junit.xml
+      displayName: 'Ejecutar pruebas de Autenticación'
+      continueOnError: true
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: '**/junit.xml'
+        testRunTitle: 'Pruebas de Autenticación'
+        failTaskOnFailedTests: false
+      displayName: 'Publicar resultados de pruebas'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports/$(moduleName)'
+        artifactName: 'Reporte-Autenticacion'
+        publishLocation: 'Container'
+      displayName: 'Publicar reporte HTML'
+
