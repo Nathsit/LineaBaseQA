@@ -1,0 +1,40 @@
+# Docker Compose para ejecutar pruebas con Playwright
+# Equivalente al docker-compose.yml del proyecto Robot Framework
+
+version: '3.8'
+
+services:
+  playwright-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sisdep-playwright-tests
+    volumes:
+      - ./reports:/app/reports
+      - ./screenshots:/app/reports/screenshots
+      - ./logs:/app/logs
+    environment:
+      - BROWSER=chromium
+      - BROWSER_HEADLESS=true
+      - PYTEST_CURRENT_TEST=${PYTEST_CURRENT_TEST:-}
+    command: pytest -v --html=reports/report.html --self-contained-html tests/features/autenticacion/
+    profiles:
+      - local
+      - ci
+
+  playwright-tests-all:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sisdep-playwright-tests-all
+    volumes:
+      - ./reports:/app/reports
+      - ./screenshots:/app/reports/screenshots
+      - ./logs:/app/logs
+    environment:
+      - BROWSER=chromium
+      - BROWSER_HEADLESS=true
+    command: pytest -v --html=reports/report.html --self-contained-html tests/
+    profiles:
+      - all
+

@@ -1,0 +1,15 @@
+# Dependencias del proyecto SISDEP - Playwright
+# Equivalente a requirements.txt del proyecto Robot Framework
+
+# Playwright (versión más reciente para mejor compatibilidad con Python 3.13)
+playwright>=1.48.0
+
+# Pytest y plugins
+pytest>=8.0.0
+pytest-html>=4.1.1
+pytest-playwright>=0.4.3
+pytest-xdist>=3.5.0  # Para ejecución paralela
+
+# Utilidades
+python-dotenv>=1.0.0  # Para variables de entorno
+
