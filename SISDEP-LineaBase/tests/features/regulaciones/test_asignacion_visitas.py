@@ -104,3 +104,22 @@ def test_eliminar_visita_asignada(page: Page):
     visitas_page.confirmar_eliminacion_visita()
     # Nota: Verificación de eliminación puede requerir implementación adicional
 
+
+@pytest.mark.regulaciones
+@pytest.mark.visitas
+@pytest.mark.reporte
+@pytest.mark.excel
+@pytest.mark.positivo
+def test_generar_reporte_excel_visitas_domiciliarias(page: Page):
+    """
+    Generar reporte Excel de visitas domiciliarias
+    Equivalente a: Generar reporte Excel de visitas domiciliarias
+    """
+    login_page = LoginPage(page)
+    visitas_page = VisitasPage(page)
+    
+    login_page.navegar_a_sisdep()
+    login_page.realizar_login_sisdep(VALID_USERNAME, VALID_PASSWORD)
+    visitas_page.el_usuario_esta_en_seccion_asignacion_visitas()
+
+

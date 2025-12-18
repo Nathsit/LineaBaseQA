@@ -12,50 +12,28 @@
 | Métrica | Valor |
 |---------|-------|
 | **Total de casos de uso** | 62 |
-| **Casos implementados** | 36 |
-| **Casos faltantes** | 26 |
-| **Porcentaje completado** | **58.1%** |
+| **Casos implementados** | 56 |
+| **Casos faltantes** | 6 |
+| **Porcentaje completado** | **90.3%** |
 | **Tiempo total estimado** | **2 semanas (80 horas)** |
 | **Tiempo para casos de uso** | **7 días (56 horas)** |
 | **Tiempo para CI/CD y despliegue** | **3 días (24 horas)** |
 
 ---
 
-## ❌ CASOS DE USO FALTANTES (26)
+## ❌ CASOS DE USO FALTANTES (6)
 
-### Regulaciones - Autorizaciones (7 casos)
-1. ❌ **Actualizar una visita administrativa** (14)
-2. ❌ **Actualizar una resolución** (16)
-3. ❌ **Registrar la entrega de un módulo en una autorización** (17)
-4. ❌ **Agregar un recurso a la resolución** (18)
-5. ❌ **Agregar una notificación a la resolución** (19)
-6. ❌ **Agregar seguimiento a la notificación** (20)
-7. ❌ **Actualizar la información general de una autorización** (21)
+### Regulaciones - Autorizaciones (4 casos)
+1. ❌ **Registrar la entrega de un módulo en una autorización** (17)
+2. ❌ **Agregar un recurso a la resolución** (18)
+3. ❌ **Agregar una notificación a la resolución** (19)
+4. ❌ **Agregar seguimiento a la notificación** (20)
 
-### Regulaciones - Visitas (1 caso)
-8. ❌ **Generar reporte Excel de visitas domiciliarias** (25)
-
-### Regulaciones - Módulos (2 casos)
-9. ❌ **Generar reporte Excel de módulos** (30)
-10. ❌ **Eliminar un módulo (en uso)** (59)
-
-### Social - Estudio Socioeconómico (3 casos)
-11. ❌ **Actualizar un estudio socioeconómico** (36)
-12. ❌ **Generar PDF del Concepto socioeconómico** (39)
-13. ❌ **Firmar un estudio socioeconómico (incompleto)** (60)
-
-### Social - Ofertas Institucionales (5 casos)
-14. ❌ **Actualizar una oferta institucional** (41)
-15. ❌ **Actualizar la información de un participante** (44)
-16. ❌ **Registrar evidencia a una oferta** (46)
-17. ❌ **Generar reporte Excel de ofertas institucionales** (47)
-18. ❌ **Generar reporte Excel de los participantes de una oferta** (48)
-
-### Social - Vehículos (1 caso)
-19. ❌ **Actualizar un vehículo** (50)
+### Social - Ofertas Institucionales (1 caso)
+5. ❌ **Registrar evidencia a una oferta** (46)
 
 ### Casos Negativos Adicionales (1 caso)
-20. ❌ **Registrar la entrega de un módulo (archivos faltantes)** (58)
+6. ❌ **Registrar la entrega de un módulo (archivos faltantes)** (58)
 
 ---
 

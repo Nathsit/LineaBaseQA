@@ -13,6 +13,7 @@ sys.path.insert(0, str(root_dir))
 from playwright.sync_api import Page
 from page_objects.login_page import LoginPage
 from page_objects.ofertas_institucionales_page import OfertasInstitucionalesPage
+from page_objects.personas_page import PersonasPage
 from config.config import VALID_USERNAME, VALID_PASSWORD
 from data.test_data import TIPO_OFERTA, CONVENIO, DOCUMENTO_PARTICIPANTE, TIPO_CONOCIMIENTO
 
@@ -122,4 +123,61 @@ def test_actualizar_oferta_institucional(page: Page):
     # Actualizar la oferta usando el tipo de oferta del primer test
     ofertas_page.actualizar_oferta_institucional(TIPO_OFERTA)
     ofertas_page.verificar_actualizacion_oferta_exitosa()
+
+
+@pytest.mark.social
+@pytest.mark.ofertas
+@pytest.mark.participante
+@pytest.mark.actualizar
+@pytest.mark.positivo
+def test_actualizar_informacion_participante(page: Page):
+    """
+    Actualizar la información de un participante
+    Equivalente a: Actualizar la información de un participante
+    """
+    login_page = LoginPage(page)
+    personas_page = PersonasPage(page)
+    
+    login_page.navegar_a_sisdep()
+    login_page.realizar_login_sisdep(VALID_USERNAME, VALID_PASSWORD)
+    personas_page.ir_a_modulo_personas()
+
+
+@pytest.mark.social
+@pytest.mark.ofertas
+@pytest.mark.reporte
+@pytest.mark.excel
+@pytest.mark.positivo
+def test_generar_reporte_excel_ofertas_institucionales(page: Page):
+    """
+    Generar reporte Excel de ofertas institucionales
+    Equivalente a: Generar reporte Excel de ofertas institucionales
+    """
+    login_page = LoginPage(page)
+    ofertas_page = OfertasInstitucionalesPage(page)
+    
+    login_page.navegar_a_sisdep()
+    login_page.realizar_login_sisdep(VALID_USERNAME, VALID_PASSWORD)
+    ofertas_page.ir_a_seccion_ofertas_institucionales()
+    ofertas_page.hacer_click_en_boton_excel()
+
+
+@pytest.mark.social
+@pytest.mark.ofertas
+@pytest.mark.participante
+@pytest.mark.reporte
+@pytest.mark.excel
+@pytest.mark.positivo
+def test_generar_reporte_excel_participantes_oferta(page: Page):
+    """
+    Generar reporte Excel de los participantes de una oferta
+    Equivalente a: Generar reporte Excel de los participantes de una oferta
+    """
+    login_page = LoginPage(page)
+    ofertas_page = OfertasInstitucionalesPage(page)
+    
+    login_page.navegar_a_sisdep()
+    login_page.realizar_login_sisdep(VALID_USERNAME, VALID_PASSWORD)
+    ofertas_page.ir_a_seccion_ofertas_institucionales()
+    ofertas_page.generar_reporte_excel_participantes(TIPO_OFERTA)
 

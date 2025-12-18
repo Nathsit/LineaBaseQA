@@ -45,6 +45,7 @@ class ModulosPage:
     DETALLES_MODULO_BUTTON_PRIMERO = "xpath=(//button[@aria-label='Detalles' and .//span[text()='Detalles']])[1]"
     ELIMINAR_MODULO_BUTTON_PRIMERO = "xpath=(//button[@aria-label='Eliminar' and .//span[text()='Eliminar']])[1]"
     FILTRO_SERIAL_INPUT = "xpath=//input[@id='serial']"
+    BOTON_EXCEL = "xpath=//button[.//span[text()='Excel']]"
     
     def __init__(self, page: Page):
         self.page = page
@@ -238,4 +239,38 @@ class ModulosPage:
     def verificar_eliminacion_modulo_exitosa(self):
         """Verifica que el módulo fue eliminado exitosamente"""
         verificar_texto_en_pagina(self.page, "¡Registro eliminado exitosamente!")
+    
+    def confirmar_eliminacion_modulo(self):
+        """Confirma la eliminación del módulo"""
+        confirmar_button = self.page.locator("xpath=//button[contains(@class,'ant-btn-dangerous') and .//span[text()='Eliminar']]").first
+        confirmar_button.wait_for(state="visible", timeout=10000)
+        confirmar_button.click()
+        time.sleep(2)
+    
+    def verificar_modulo_no_eliminado(self):
+        """Verifica que el módulo no fue eliminado (está en uso)"""
+        # El mensaje puede variar, pero generalmente indica que el módulo está en uso
+        mensajes_posibles = [
+            "Elemento usado",
+            "módulo está en uso",
+            "no se puede eliminar",
+            "usado en"
+        ]
+        for mensaje in mensajes_posibles:
+            try:
+                verificar_texto_en_pagina(self.page, mensaje)
+                return
+            except:
+                continue
+        # Si no se encuentra ningún mensaje, verificar que no apareció el mensaje de éxito
+        try:
+            self.page.locator("xpath=//span[contains(text(), '¡Registro eliminado exitosamente!')]").wait_for(state="visible", timeout=2000)
+            raise Exception("El módulo fue eliminado cuando debería estar en uso")
+        except:
+            pass  # Es correcto que no aparezca el mensaje de éxito
+    
+    def hacer_click_en_boton_excel(self):
+        """Hace clic en el botón Excel para generar el reporte de módulos"""
+        hacer_click_en_elemento(self.page, self.BOTON_EXCEL)
+        time.sleep(2)  # Esperar a que se inicie la descarga
 

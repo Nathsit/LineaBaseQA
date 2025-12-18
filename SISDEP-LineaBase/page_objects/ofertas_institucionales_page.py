@@ -41,6 +41,9 @@ class OfertasInstitucionalesPage:
     # Filtros
     FILTRO_TIPO_OFERTA_INPUT = "xpath=//input[@id='tipoOferta']"
     
+    # Reporte Excel
+    BOTON_EXCEL = "xpath=//button[.//span[text()='Excel']]"
+    
     # Participantes - botón dentro del modal de detalles
     AGREGAR_PARTICIPANTE_BUTTON = "xpath=//div[@role='dialog']//button[@aria-label='Agregar' and .//span[text()='Agregar']]"
     DOCUMENTO_PARTICIPANTE_INPUT = "xpath=//input[@id='documento']"
@@ -49,6 +52,7 @@ class OfertasInstitucionalesPage:
     GUARDAR_PARTICIPANTE_BUTTON = "xpath=//button[@type='button' and .//span[@role='img' and @aria-label='save'] and .//span[text()='Guardar']]"
     REMOVER_PARTICIPANTE_BUTTON = "xpath=//div[@role='dialog']//button[@aria-label='Remover' and .//span[text()='Remover']]"
     CONFIRMAR_ELIMINAR_PARTICIPANTE_BUTTON = "xpath=//button[contains(@class,'ant-btn-dangerous') and .//span[text()='Eliminar']]"
+    BOTON_EXCEL_PARTICIPANTES = "xpath=//div[@role='dialog']//button[.//span[text()='Excel']]"
     
     def __init__(self, page: Page):
         self.page = page
@@ -359,4 +363,64 @@ class OfertasInstitucionalesPage:
         time.sleep(1)
         # Buscar el mensaje de éxito específico
         verificar_texto_en_pagina(self.page, "¡Registro actualizado exitosamente!")
+    
+    def hacer_click_en_boton_excel(self):
+        """Hace clic en el botón Excel para generar el reporte de ofertas institucionales"""
+        hacer_click_en_elemento(self.page, self.BOTON_EXCEL)
+        time.sleep(2)  # Esperar a que se inicie la descarga
+    
+    def generar_reporte_excel_participantes(self, tipo_oferta: str):
+        """Genera el reporte Excel de los participantes de una oferta institucional
+        Flujo: Filtrar por tipo de oferta -> Clic en Detalles (navega a nueva página) -> Clic en Excel"""
+        # Filtrar por tipo de oferta
+        self._seleccionar_opcion_dropdown(self.FILTRO_TIPO_OFERTA_INPUT, tipo_oferta)
+        time.sleep(2)  # Esperar a que se filtre la oferta
+        
+        # Usar .first para evitar strict mode violation
+        boton_detalles = self.page.locator(self.DETALLES_OFERTA_BUTTON).first
+        boton_detalles.wait_for(state="visible", timeout=10000)
+        # Verificar que el botón esté habilitado
+        if not boton_detalles.is_enabled():
+            time.sleep(1)
+            boton_detalles.wait_for(state="visible", timeout=5000)
+        
+        boton_detalles.scroll_into_view_if_needed()
+        time.sleep(0.5)
+        boton_detalles.click()
+        time.sleep(3)  # Esperar a que navegue a la nueva página
+        
+        # Esperar a que la página de detalles cargue completamente
+        self.page.wait_for_load_state("networkidle", timeout=10000)
+        time.sleep(1)
+        
+        # Buscar el botón Excel en la página de detalles
+        boton_excel = None
+        selectores_excel = [
+            "xpath=//button[.//span[text()='Excel']]",
+            "xpath=//button[contains(@class,'ant-btn') and .//span[text()='Excel']]",
+            "xpath=//button[@type='button' and .//span[text()='Excel']]"
+        ]
+        
+        for selector in selectores_excel:
+            try:
+                boton_excel = self.page.locator(selector).first
+                boton_excel.wait_for(state="visible", timeout=5000)
+                if boton_excel.is_visible():
+                    break
+            except:
+                continue
+        
+        if boton_excel is None or not boton_excel.is_visible():
+            # Último intento: buscar cualquier botón con texto "Excel"
+            time.sleep(2)
+            todos_los_botones_excel = self.page.locator("xpath=//button[.//span[text()='Excel']]")
+            if todos_los_botones_excel.count() > 0:
+                boton_excel = todos_los_botones_excel.first
+            else:
+                raise Exception("No se encontró el botón Excel para generar el reporte de participantes")
+        
+        boton_excel.scroll_into_view_if_needed()
+        time.sleep(0.5)
+        boton_excel.click()
+        time.sleep(2)  # Esperar a que se inicie la descarga
 

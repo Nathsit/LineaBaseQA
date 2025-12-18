@@ -111,3 +111,46 @@ def test_eliminar_modulo(page: Page):
     modulos_page.hacer_click_en_eliminar_modulo()
     # Nota: Puede requerir confirmación adicional según la implementación
 
+
+@pytest.mark.regulaciones
+@pytest.mark.modulos
+@pytest.mark.reporte
+@pytest.mark.excel
+@pytest.mark.positivo
+def test_generar_reporte_excel_modulos(page: Page):
+    """
+    Generar reporte Excel de módulos
+    Equivalente a: Generar reporte Excel de módulos
+    """
+    login_page = LoginPage(page)
+    modulos_page = ModulosPage(page)
+    
+    login_page.navegar_a_sisdep()
+    login_page.realizar_login_sisdep(VALID_USERNAME, VALID_PASSWORD)
+    modulos_page.el_usuario_esta_en_seccion_modulos()
+    modulos_page.hacer_click_en_boton_excel()
+
+
+@pytest.mark.regulaciones
+@pytest.mark.modulos
+@pytest.mark.eliminar
+@pytest.mark.negativo
+def test_eliminar_modulo_en_uso(page: Page):
+    """
+    Intentar eliminar un módulo que está en uso
+    Equivalente a: Eliminar un módulo (en uso)
+    """
+    login_page = LoginPage(page)
+    modulos_page = ModulosPage(page)
+    
+    login_page.navegar_a_sisdep()
+    login_page.realizar_login_sisdep(VALID_USERNAME, VALID_PASSWORD)
+    modulos_page.el_usuario_esta_en_seccion_modulos()
+    
+    # Filtrar un módulo que esté en uso (debe existir uno previamente)
+    # Nota: Se necesita un serial de un módulo que esté en uso
+    modulos_page.filtrar_modulo_por_serial("10-AVPL-002")
+    modulos_page.hacer_click_en_eliminar_modulo()
+    modulos_page.confirmar_eliminacion_modulo()
+    modulos_page.verificar_modulo_no_eliminado()
+

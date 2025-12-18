@@ -36,6 +36,7 @@ class VisitasPage:
     ACTUALIZAR_VISITA_BUTTON_PRIMERO = "xpath=(//button[.//span[text()='Actualizar']])[1]"
     ELIMINAR_VISITA_BUTTON_PRIMERO = "xpath=(//button[@aria-label='Remover' and .//span[text()='Remover']])[1]"
     CONFIRMAR_ELIMINAR_VISITA_BUTTON = "xpath=//button[contains(@class,'ant-btn-dangerous') and .//span[text()='Eliminar']]"
+    BOTON_EXCEL = "xpath=//button[.//span[text()='Excel']]"
     
     # Campos del formulario
     VISITADOR_DROPDOWN = "id=idVisitador"
@@ -169,4 +170,9 @@ class VisitasPage:
     def verificar_eliminacion_visita_exitosa(self):
         """Verifica que la visita fue eliminada exitosamente"""
         verificar_texto_en_pagina(self.page, "¡Registro eliminado exitosamente!")
+    
+    def hacer_click_en_boton_excel(self):
+        """Hace clic en el botón Excel para generar el reporte de visitas domiciliarias"""
+        hacer_click_en_elemento(self.page, self.BOTON_EXCEL)
+        time.sleep(2)  # Esperar a que se inicie la descarga
 
