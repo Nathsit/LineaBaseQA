@@ -81,6 +81,14 @@ stages:
         testRunTitle: 'Pruebas de Autenticación'
         failTaskOnFailedTests: false
 
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: 'SISDEP-LineaBase/reports/autenticacion'
+        artifactName: 'Reportes-Autenticacion'
+        publishLocation: 'Container'
+      displayName: 'Publicar reportes de Autenticación'
+      condition: always()
+
   - job: TestAdministracion
     displayName: 'Pruebas de Administración'
     steps:
@@ -116,6 +124,14 @@ stages:
         testResultsFiles: '**/junit.xml'
         testRunTitle: 'Pruebas de Administración'
         failTaskOnFailedTests: false
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: 'SISDEP-LineaBase/reports/administracion'
+        artifactName: 'Reportes-Administracion'
+        publishLocation: 'Container'
+      displayName: 'Publicar reportes de Administración'
+      condition: always()
 
   - job: TestRegulaciones
     displayName: 'Pruebas de Regulaciones'
@@ -153,6 +169,14 @@ stages:
         testRunTitle: 'Pruebas de Regulaciones'
         failTaskOnFailedTests: false
 
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: 'SISDEP-LineaBase/reports/regulaciones'
+        artifactName: 'Reportes-Regulaciones'
+        publishLocation: 'Container'
+      displayName: 'Publicar reportes de Regulaciones'
+      condition: always()
+
   - job: TestSocial
     displayName: 'Pruebas de Social'
     steps:
@@ -189,6 +213,14 @@ stages:
         testRunTitle: 'Pruebas de Social'
         failTaskOnFailedTests: false
 
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: 'SISDEP-LineaBase/reports/social'
+        artifactName: 'Reportes-Social'
+        publishLocation: 'Container'
+      displayName: 'Publicar reportes de Social'
+      condition: always()
+
 - stage: PublishReports
   displayName: 'Publicar Reportes Consolidados'
   dependsOn: TestAllModules
@@ -196,10 +228,60 @@ stages:
   - job: ConsolidateReports
     displayName: 'Consolidar y Publicar Reportes'
     steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'Reportes-Autenticacion'
+        targetPath: '$(Pipeline.Workspace)/Reportes-Autenticacion'
+      displayName: 'Descargar reportes de Autenticación'
+      condition: always()
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'Reportes-Administracion'
+        targetPath: '$(Pipeline.Workspace)/Reportes-Administracion'
+      displayName: 'Descargar reportes de Administración'
+      condition: always()
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'Reportes-Regulaciones'
+        targetPath: '$(Pipeline.Workspace)/Reportes-Regulaciones'
+      displayName: 'Descargar reportes de Regulaciones'
+      condition: always()
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'Reportes-Social'
+        targetPath: '$(Pipeline.Workspace)/Reportes-Social'
+      displayName: 'Descargar reportes de Social'
+      condition: always()
+
+    - script: |
+        mkdir -p $(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports-consolidados
+        if [ -d "$(Pipeline.Workspace)/Reportes-Autenticacion" ]; then
+          cp -r $(Pipeline.Workspace)/Reportes-Autenticacion/* $(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports-consolidados/ 2>/dev/null || true
+        fi
+        if [ -d "$(Pipeline.Workspace)/Reportes-Administracion" ]; then
+          cp -r $(Pipeline.Workspace)/Reportes-Administracion/* $(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports-consolidados/ 2>/dev/null || true
+        fi
+        if [ -d "$(Pipeline.Workspace)/Reportes-Regulaciones" ]; then
+          cp -r $(Pipeline.Workspace)/Reportes-Regulaciones/* $(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports-consolidados/ 2>/dev/null || true
+        fi
+        if [ -d "$(Pipeline.Workspace)/Reportes-Social" ]; then
+          cp -r $(Pipeline.Workspace)/Reportes-Social/* $(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports-consolidados/ 2>/dev/null || true
+        fi
+      displayName: 'Consolidar reportes'
+      condition: always()
+
     - task: PublishBuildArtifacts@1
       inputs:
-        pathToPublish: '$(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports'
+        pathToPublish: '$(System.DefaultWorkingDirectory)/SISDEP-LineaBase/reports-consolidados'
         artifactName: 'Reportes-Todos-Los-Modulos'
         publishLocation: 'Container'
-      displayName: 'Publicar todos los reportes'
+      displayName: 'Publicar todos los reportes consolidados'
+      condition: always()
 
