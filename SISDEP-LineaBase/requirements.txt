@@ -9,7 +9,7 @@ pytest>=8.0.0
 pytest-html>=4.1.1
 pytest-playwright>=0.4.3
 pytest-xdist>=3.5.0  # Para ejecución paralela
-pytest-junitxml>=0.8.0  # Para generar reportes XML compatibles con Azure DevOps
+# Nota: --junitxml está incluido en pytest, no requiere paquete adicional
 
 # Utilidades
 python-dotenv>=1.0.0  # Para variables de entorno
