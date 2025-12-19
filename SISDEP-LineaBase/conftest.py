@@ -24,8 +24,12 @@ import os
 @pytest.fixture(scope="session")
 def browser_type_launch_args():
     """Configuración de argumentos del navegador"""
+    # En entornos CI/CD (Azure DevOps, GitHub Actions, etc.) forzar headless
+    is_ci = os.getenv("TF_BUILD") or os.getenv("CI") or os.getenv("GITHUB_ACTIONS")
+    headless_mode = BROWSER_HEADLESS if not is_ci else True
+    
     return {
-        "headless": BROWSER_HEADLESS,
+        "headless": headless_mode,
         "args": [
             "--ignore-ssl-errors",
             "--ignore-certificate-errors",
